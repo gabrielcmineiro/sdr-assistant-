@@ -47,6 +47,15 @@
         .status-controls {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            max-width: 600px;
+        }
+
+        .status-controls .btn-row-1,
+        .status-controls .btn-row-2 {
+            display: flex;
+            gap: 10px;
+            width: 100%;
         }
 
         .btn {
@@ -151,6 +160,65 @@
             background: #f1f3f5;
             color: #333;
             border-bottom-left-radius: 4px;
+        }
+
+        /* Markdown styling */
+        .message-content p {
+            margin: 0 0 10px 0;
+        }
+
+        .message-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-content strong {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .message-content ul,
+        .message-content ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .message-content li {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
+        .message-content h1,
+        .message-content h2,
+        .message-content h3 {
+            margin: 15px 0 10px 0;
+            font-weight: 600;
+        }
+
+        .message-content h1 { font-size: 18px; }
+        .message-content h2 { font-size: 16px; }
+        .message-content h3 { font-size: 14px; }
+
+        .message-content code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .message-content pre {
+            background: #2d3748;
+            color: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .message-content pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
         }
 
         .message-label {
@@ -313,6 +381,31 @@
             color: white;
         }
 
+        .rating-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rating-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: scale(1.05);
+        }
+
+        .rating-btn.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -333,11 +426,16 @@
                 <div class="lead-meta" id="leadMeta"></div>
             </div>
             <div class="status-controls">
-                <button class="btn" onclick="goHome()" style="background: rgba(255,255,255,0.2);">🏠 Home</button>
-                <button class="btn" onclick="markAsInProgress()">🟡 Em Andamento</button>
-                <button class="btn" onclick="markAsScheduled()">✅ Agendado</button>
-                <button class="btn" onclick="showLostModal()">❌ Marcar Lost</button>
-                <button class="btn" onclick="showDeleteModal()" style="background: rgba(255,71,87,0.2); border-color: #ff4757;">🗑️ Apagar</button>
+                <div class="btn-row-1">
+                    <button class="btn" onclick="goHome()" style="background: rgba(255,255,255,0.2);">🏠 Home</button>
+                    <button class="btn" onclick="showRatingModal()" style="background: rgba(255,255,255,0.2);">⭐ Avaliar Conversa</button>
+                    <button class="btn" onclick="showDeleteModal()" style="background: rgba(255,71,87,0.2); border-color: #ff4757;">🗑️ Apagar</button>
+                </div>
+                <div class="btn-row-2">
+                    <button class="btn" onclick="markAsInProgress()">🟡 Em Andamento</button>
+                    <button class="btn" onclick="markAsScheduled()">✅ Agendado</button>
+                    <button class="btn" onclick="showLostModal()">❌ Marcar Lost</button>
+                </div>
             </div>
         </div>
     </div>
@@ -398,13 +496,61 @@
         </div>
     </div>
 
+    <!-- Modal Rating -->
+    <div class="modal" id="ratingModal">
+        <div class="modal-content">
+            <div class="modal-header">⭐ Avaliar Conversa</div>
+            <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                Avalie a qualidade da sugestão da IA para melhorarmos continuamente:
+            </p>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 10px; color: #333;">
+                    Nota (0-10):
+                </label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="rating-btn" data-rating="0" onclick="selectRating(0)">0</button>
+                    <button class="rating-btn" data-rating="1" onclick="selectRating(1)">1</button>
+                    <button class="rating-btn" data-rating="2" onclick="selectRating(2)">2</button>
+                    <button class="rating-btn" data-rating="3" onclick="selectRating(3)">3</button>
+                    <button class="rating-btn" data-rating="4" onclick="selectRating(4)">4</button>
+                    <button class="rating-btn" data-rating="5" onclick="selectRating(5)">5</button>
+                    <button class="rating-btn" data-rating="6" onclick="selectRating(6)">6</button>
+                    <button class="rating-btn" data-rating="7" onclick="selectRating(7)">7</button>
+                    <button class="rating-btn" data-rating="8" onclick="selectRating(8)">8</button>
+                    <button class="rating-btn" data-rating="9" onclick="selectRating(9)">9</button>
+                    <button class="rating-btn" data-rating="10" onclick="selectRating(10)">10</button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">
+                    Comentários (opcional):
+                </label>
+                <textarea 
+                    class="modal-textarea" 
+                    id="ratingComments" 
+                    placeholder="O que funcionou bem? O que poderia melhorar?"
+                    style="min-height: 100px;"
+                ></textarea>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn" style="background: #e0e0e0; color: #333;" onclick="closeRatingModal()">Cancelar</button>
+                <button class="btn" onclick="saveRating()">Salvar Avaliação</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         let supabaseClient;
         let agentConfig;
         let conversationId;
         let conversation;
         let messages = [];
+        let selectedRating = null;
 
         // Cloudflare Worker Proxy URL
         const PROXY_URL = 'https://black-wood-a129.ferramentas-ac3.workers.dev';
@@ -515,15 +661,22 @@
                 return;
             }
 
-            messagesContainer.innerHTML = messages.map(msg => `
-                <div class="message ${msg.role}">
-                    <div class="message-avatar">${msg.role === 'lead' ? '👤' : '🤖'}</div>
-                    <div>
-                        <div class="message-label">${msg.role === 'lead' ? 'Lead respondeu:' : 'Sugestão do assistente:'}</div>
-                        <div class="message-content">${msg.content}</div>
+            messagesContainer.innerHTML = messages.map(msg => {
+                // Processar markdown apenas para mensagens do assistente
+                const content = msg.role === 'assistant' 
+                    ? marked.parse(msg.content)
+                    : msg.content;
+                
+                return `
+                    <div class="message ${msg.role}">
+                        <div class="message-avatar">${msg.role === 'lead' ? '👤' : '🤖'}</div>
+                        <div>
+                            <div class="message-label">${msg.role === 'lead' ? 'Lead respondeu:' : 'Sugestão do assistente:'}</div>
+                            <div class="message-content">${content}</div>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
@@ -713,6 +866,74 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
         function goHome() {
             const baseUrl = window.location.origin + window.location.pathname.replace('chat.html', '');
             window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}`;
+        }
+
+        function showRatingModal() {
+            // Carregar avaliação existente se houver
+            if (conversation.rating !== null && conversation.rating !== undefined) {
+                selectedRating = conversation.rating;
+                selectRating(selectedRating);
+            }
+            
+            if (conversation.feedback_comments) {
+                document.getElementById('ratingComments').value = conversation.feedback_comments;
+            }
+            
+            document.getElementById('ratingModal').classList.add('active');
+        }
+
+        function closeRatingModal() {
+            document.getElementById('ratingModal').classList.remove('active');
+            selectedRating = null;
+            document.getElementById('ratingComments').value = '';
+            // Remover seleção visual
+            document.querySelectorAll('.rating-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+        }
+
+        function selectRating(rating) {
+            selectedRating = rating;
+            
+            // Atualizar visual dos botões
+            document.querySelectorAll('.rating-btn').forEach(btn => {
+                if (parseInt(btn.dataset.rating) === rating) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+        }
+
+        async function saveRating() {
+            if (selectedRating === null) {
+                alert('⚠️ Por favor, selecione uma nota de 0 a 10');
+                return;
+            }
+
+            const comments = document.getElementById('ratingComments').value.trim();
+
+            try {
+                const { error } = await supabaseClient
+                    .from('conversations')
+                    .update({ 
+                        rating: selectedRating,
+                        feedback_comments: comments || null,
+                        updated_at: new Date().toISOString() 
+                    })
+                    .eq('id', conversationId);
+
+                if (error) throw error;
+
+                conversation.rating = selectedRating;
+                conversation.feedback_comments = comments;
+                
+                closeRatingModal();
+                alert('✅ Avaliação salva com sucesso!');
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro ao salvar avaliação: ' + error.message);
+            }
         }
 
         function showLostModal() {
