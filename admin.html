@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             border-radius: 16px;
@@ -44,17 +44,7 @@
         }
 
         .section {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -85,10 +75,14 @@
         }
 
         textarea {
-            min-height: 250px;
+            min-height: 150px;
             resize: vertical;
             font-family: 'Monaco', 'Courier New', monospace;
             line-height: 1.6;
+        }
+
+        textarea.large {
+            min-height: 200px;
         }
 
         .btn {
@@ -128,10 +122,10 @@
             color: #0c5460;
         }
 
-        .alert-success {
-            background: #d4edda;
-            border: 1px solid #28a745;
-            color: #155724;
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
         }
 
         .link-box {
@@ -195,13 +189,190 @@
             color: #333;
             margin-bottom: 15px;
         }
+
+        /* Accordion para módulos */
+        .module-group {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .module-group summary {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-group summary:hover {
+            background: #e9ecef;
+        }
+
+        .module-group[open] summary {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .module-content {
+            padding: 20px;
+        }
+
+        .module {
+            margin-bottom: 20px;
+        }
+
+        .module:last-child {
+            margin-bottom: 0;
+        }
+
+        .module label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .module small {
+            display: block;
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .char-count {
+            font-size: 11px;
+            color: #888;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-required {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .badge-optional {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            background: #f0f0f0;
+        }
+
+        .tab.active {
+            color: #667eea;
+            background: #f8f9ff;
+            border-bottom: 2px solid #667eea;
+            margin-bottom: -12px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .state-preview {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .state-preview h4 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .state-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+
+        .state-item:last-child {
+            border-bottom: none;
+        }
+
+        .state-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .state-modules {
+            color: #666;
+        }
+
+        /* SDR Links Section */
+        .sdr-links {
+            display: grid;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .sdr-link-item {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .sdr-link-item h4 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sdr-link-item .link-display {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>⚙️ Configurar SDR Social Selling Assistant</h1>
-            <p>Configure o assistente de conversas para sua equipe de vendas</p>
+            <p>Sistema Modular de Prompts v2.0 - Multi-usuário</p>
         </div>
 
         <div class="content">
@@ -210,67 +381,207 @@
                 <a href="https://supabase.com" target="_blank" style="color: #0c5460; font-weight: 600;">Criar conta</a>
             </div>
 
-            <div class="config-group">
-                <h3>🔌 Configuração do Banco de Dados (Supabase)</h3>
-                
-                <div class="section">
-                    <label for="supabaseUrl">Supabase URL</label>
-                    <input type="text" id="supabaseUrl" placeholder="https://seu-projeto.supabase.co" />
-                    <p class="help-text">Encontre em: Settings → API → Project URL</p>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('config')">🔧 Configurações</button>
+                <button class="tab" onclick="switchTab('prompts')">💬 Prompts Modulares</button>
+                <button class="tab" onclick="switchTab('preview')">👁️ Preview Estados</button>
+            </div>
+
+            <!-- Tab: Configurações -->
+            <div id="tab-config" class="tab-content active">
+                <div class="config-group">
+                    <h3>📌 Configuração do Banco de Dados (Supabase)</h3>
+                    
+                    <div class="section">
+                        <label for="supabaseUrl">Supabase URL</label>
+                        <input type="text" id="supabaseUrl" placeholder="https://seu-projeto.supabase.co" />
+                        <p class="help-text">Encontre em: Settings → API → Project URL</p>
+                    </div>
+
+                    <div class="section">
+                        <label for="supabaseKey">Supabase Anon Key</label>
+                        <input type="password" id="supabaseKey" placeholder="eyJhbGc..." />
+                        <p class="help-text">Encontre em: Settings → API → anon/public key</p>
+                    </div>
+                </div>
+
+                <div class="config-group">
+                    <h3>🔑 Configuração da API Anthropic</h3>
+                    
+                    <div class="section">
+                        <label for="apiKey">API Key da Anthropic</label>
+                        <input type="password" id="apiKey" placeholder="sk-ant-api03-..." />
+                        <p class="help-text">
+                            Obtenha em: <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a>
+                        </p>
+                    </div>
                 </div>
 
                 <div class="section">
-                    <label for="supabaseKey">Supabase Anon Key</label>
-                    <input type="password" id="supabaseKey" placeholder="eyJhbGc..." />
-                    <p class="help-text">Encontre em: Settings → API → anon/public key</p>
+                    <label for="agentName">Nome do Assistente</label>
+                    <input type="text" id="agentName" placeholder="SDR Assistant GLA" value="SDR Assistant" />
                 </div>
             </div>
 
-            <div class="config-group">
-                <h3>🔑 Configuração da API Anthropic</h3>
-                
-                <div class="section">
-                    <label for="apiKey">API Key da Anthropic</label>
-                    <input type="password" id="apiKey" placeholder="sk-ant-api03-..." />
-                    <p class="help-text">
-                        Obtenha em: <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a>
-                    </p>
+            <!-- Tab: Prompts Modulares -->
+            <div id="tab-prompts" class="tab-content">
+                <div class="alert alert-warning" id="legacyWarning" style="display: none;">
+                    ⚠️ Você está usando o formato de prompt legado. Para melhor performance, preencha os módulos abaixo.
+                </div>
+
+                <!-- Módulos Principais -->
+                <details class="module-group" open>
+                    <summary>📌 Módulos Principais (sempre carregados)</summary>
+                    <div class="module-content">
+                        <div class="module">
+                            <label>CORE <span class="badge badge-required">Obrigatório</span></label>
+                            <small>Identidade, objetivo, formato de resposta, guardrails</small>
+                            <textarea id="prompt_core" class="large" placeholder="Você é Thainá, assistente de social selling da GLA..."></textarea>
+                            <div class="char-count"><span id="count_core">0</span> caracteres</div>
+                        </div>
+                        
+                        <div class="module">
+                            <label>PRODUTO <span class="badge badge-optional">Opcional</span></label>
+                            <small>Informações sobre a mentoria e sessão estratégica</small>
+                            <textarea id="prompt_produto" placeholder="A GLA oferece mentoria de carreira para profissionais de marketing..."></textarea>
+                            <div class="char-count"><span id="count_produto">0</span> caracteres</div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Módulos de Abertura -->
+                <details class="module-group">
+                    <summary>🎯 Módulos de Abertura (fase de qualificação)</summary>
+                    <div class="module-content">
+                        <div class="module">
+                            <label>ARQUÉTIPOS <span class="badge badge-optional">Opcional</span></label>
+                            <small>Os 5 perfis de carreira para identificação</small>
+                            <textarea id="prompt_arquetipos" placeholder="Arquétipo 1: O Estagnado - profissional que..."></textarea>
+                            <div class="char-count"><span id="count_arquetipos">0</span> caracteres</div>
+                        </div>
+                        
+                        <div class="module">
+                            <label>LINGUAGEM E DORES <span class="badge badge-optional">Opcional</span></label>
+                            <small>Frases do público, dores comuns, palavras que ressoam</small>
+                            <textarea id="prompt_linguagem" placeholder="Dores comuns: 'estou travado', 'não sou reconhecido'..."></textarea>
+                            <div class="char-count"><span id="count_linguagem">0</span> caracteres</div>
+                        </div>
+                        
+                        <div class="module">
+                            <label>FLUXO DE ABERTURA <span class="badge badge-optional">Opcional</span></label>
+                            <small>Templates de primeira mensagem e qualificação</small>
+                            <textarea id="prompt_abertura" placeholder="Ao iniciar conversa: 1. Cumprimentar..."></textarea>
+                            <div class="char-count"><span id="count_abertura">0</span> caracteres</div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Módulos de Transição -->
+                <details class="module-group">
+                    <summary>🚀 Módulos de Transição (fase de conversão)</summary>
+                    <div class="module-content">
+                        <div class="module">
+                            <label>PROVAS SOCIAIS <span class="badge badge-optional">Opcional</span></label>
+                            <small>Depoimentos, transformações, quotes para gerar credibilidade</small>
+                            <textarea id="prompt_provas" placeholder="Depoimento 1: 'Depois da mentoria eu consegui...'"></textarea>
+                            <div class="char-count"><span id="count_provas">0</span> caracteres</div>
+                        </div>
+                        
+                        <div class="module">
+                            <label>FLUXO DE TRANSIÇÃO <span class="badge badge-optional">Opcional</span></label>
+                            <small>Scripts de proposta, objeções, agendamento, follow-up</small>
+                            <textarea id="prompt_transicao" placeholder="Para propor sessão: 'Olha, pelo que você me contou...'"></textarea>
+                            <div class="char-count"><span id="count_transicao">0</span> caracteres</div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Prompt Legado -->
+                <details class="module-group">
+                    <summary>📜 Prompt Legado (fallback)</summary>
+                    <div class="module-content">
+                        <div class="module">
+                            <label>PROMPT ÚNICO <span class="badge badge-optional">Fallback</span></label>
+                            <small>Se os módulos acima estiverem vazios, este prompt será usado</small>
+                            <textarea id="systemPrompt" placeholder="Você é um assistente especializado em social selling..."></textarea>
+                            <div class="char-count"><span id="count_legacy">0</span> caracteres</div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Tab: Preview Estados -->
+            <div id="tab-preview" class="tab-content">
+                <div class="state-preview">
+                    <h4>📊 Módulos carregados por Estado</h4>
+                    
+                    <div class="state-item">
+                        <span class="state-name">🎯 ABERTURA</span>
+                        <span class="state-modules">CORE + PRODUTO + ARQUÉTIPOS + LINGUAGEM + ABERTURA</span>
+                    </div>
+                    
+                    <div class="state-item">
+                        <span class="state-name">🚀 TRANSIÇÃO</span>
+                        <span class="state-modules">CORE + PRODUTO + PROVAS + TRANSIÇÃO</span>
+                    </div>
+                    
+                    <div class="state-item">
+                        <span class="state-name">⚠️ OBJEÇÃO</span>
+                        <span class="state-modules">CORE + PRODUTO + PROVAS + TRANSIÇÃO</span>
+                    </div>
+                    
+                    <div class="state-item">
+                        <span class="state-name">📅 AGENDAMENTO</span>
+                        <span class="state-modules">CORE + PRODUTO + TRANSIÇÃO</span>
+                    </div>
+                    
+                    <div class="state-item">
+                        <span class="state-name">❌ DESQUALIFICADO</span>
+                        <span class="state-modules">CORE</span>
+                    </div>
+                </div>
+
+                <div class="state-preview" style="margin-top: 20px;">
+                    <h4>📈 Estimativa de Tamanho</h4>
+                    <div id="sizeEstimate">
+                        <p style="color: #666; font-size: 13px;">Preencha os módulos para ver a estimativa de tamanho por estado.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="section">
-                <div class="section-title">💬 Prompt Master (Instruções do Assistente)</div>
-                <textarea id="systemPrompt" placeholder="Você é um assistente especializado em social selling que ajuda SDRs da GLA a conduzirem conversas...">Você é um assistente especializado em social selling que ajuda SDRs a conduzirem conversas em redes sociais.
-
-Seu papel:
-- Analisar as respostas que a pessoa deu no Instagram ou LinkedIn
-- Sugerir a melhor próxima mensagem para manter o engajamento
-- Ajudar a qualificar o lead durante a conversa
-- Identificar o momento certo para agendar uma reunião de vendas
-
-Diretrizes:
-- Seja consultivo, não agressivo
-- Faça perguntas que ajudem a entender a dor do lead
-- Use linguagem natural e próxima
-- Sugira mensagens curtas e diretas (estilo WhatsApp/DM)
-- Quando o lead demonstrar interesse, sugira o agendamento
-
-Tom de voz: Profissional mas amigável, como se fosse uma conversa entre colegas.</textarea>
-            </div>
-
-            <div class="section">
-                <label for="agentName">Nome do Assistente</label>
-                <input type="text" id="agentName" placeholder="SDR Assistant GLA" value="SDR Assistant" />
-            </div>
-
-            <button class="btn" onclick="saveConfig()" id="saveBtn">💾 Salvar Configuração</button>
+            <button class="btn" onclick="saveConfig()" id="saveBtn" style="margin-top: 20px;">💾 Salvar Configuração</button>
 
             <div class="link-box" id="linkBox">
                 <h3>✅ Dashboard Configurado!</h3>
-                <p style="font-size: 14px; margin-bottom: 15px; color: #666;">Compartilhe este link com sua equipe de SDRs:</p>
-                <div class="link-display">
-                    <input type="text" id="shareLink" readonly />
-                    <button class="copy-btn" onclick="copyLink()">📋 Copiar</button>
+                <p style="font-size: 14px; margin-bottom: 15px; color: #666;">
+                    Links individuais para cada SDR (copie e envie para cada pessoa):
+                </p>
+                
+                <div class="sdr-links">
+                    <div class="sdr-link-item">
+                        <h4>👩‍💼 Thainá</h4>
+                        <div class="link-display">
+                            <input type="text" id="shareLink_thaina" readonly />
+                            <button class="copy-btn" onclick="copyLink('thaina')">📋 Copiar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="sdr-link-item">
+                        <h4>👨‍💼 Gabriel</h4>
+                        <div class="link-display">
+                            <input type="text" id="shareLink_gabriel" readonly />
+                            <button class="copy-btn" onclick="copyLink('gabriel')">📋 Copiar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="sdr-link-item">
+                        <h4>👩‍💼 Jeni</h4>
+                        <div class="link-display">
+                            <input type="text" id="shareLink_jeni" readonly />
+                            <button class="copy-btn" onclick="copyLink('jeni')">📋 Copiar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -280,19 +591,106 @@ Tom de voz: Profissional mas amigável, como se fosse uma conversa entre colegas
     <script>
         let agentId = null;
 
+        const moduleFields = ['prompt_core', 'prompt_produto', 'prompt_arquetipos', 'prompt_linguagem', 'prompt_provas', 'prompt_abertura', 'prompt_transicao', 'systemPrompt'];
+        
+        moduleFields.forEach(field => {
+            const el = document.getElementById(field);
+            if (el) {
+                el.addEventListener('input', () => updateCharCount(field));
+            }
+        });
+
+        function updateCharCount(field) {
+            const el = document.getElementById(field);
+            const countEl = document.getElementById('count_' + field.replace('prompt_', '').replace('systemPrompt', 'legacy'));
+            if (el && countEl) {
+                countEl.textContent = el.value.length;
+            }
+            updateSizeEstimate();
+        }
+
+        function updateSizeEstimate() {
+            const sizes = {
+                core: document.getElementById('prompt_core')?.value.length || 0,
+                produto: document.getElementById('prompt_produto')?.value.length || 0,
+                arquetipos: document.getElementById('prompt_arquetipos')?.value.length || 0,
+                linguagem: document.getElementById('prompt_linguagem')?.value.length || 0,
+                provas: document.getElementById('prompt_provas')?.value.length || 0,
+                abertura: document.getElementById('prompt_abertura')?.value.length || 0,
+                transicao: document.getElementById('prompt_transicao')?.value.length || 0
+            };
+
+            const estimates = {
+                abertura: sizes.core + sizes.produto + sizes.arquetipos + sizes.linguagem + sizes.abertura,
+                transicao: sizes.core + sizes.produto + sizes.provas + sizes.transicao,
+                objecao: sizes.core + sizes.produto + sizes.provas + sizes.transicao,
+                agendamento: sizes.core + sizes.produto + sizes.transicao,
+                desqualificado: sizes.core
+            };
+
+            const html = `
+                <div class="state-item">
+                    <span class="state-name">🎯 ABERTURA</span>
+                    <span class="state-modules">~${estimates.abertura.toLocaleString()} chars</span>
+                </div>
+                <div class="state-item">
+                    <span class="state-name">🚀 TRANSIÇÃO</span>
+                    <span class="state-modules">~${estimates.transicao.toLocaleString()} chars</span>
+                </div>
+                <div class="state-item">
+                    <span class="state-name">⚠️ OBJEÇÃO</span>
+                    <span class="state-modules">~${estimates.objecao.toLocaleString()} chars</span>
+                </div>
+                <div class="state-item">
+                    <span class="state-name">📅 AGENDAMENTO</span>
+                    <span class="state-modules">~${estimates.agendamento.toLocaleString()} chars</span>
+                </div>
+                <div class="state-item">
+                    <span class="state-name">❌ DESQUALIFICADO</span>
+                    <span class="state-modules">~${estimates.desqualificado.toLocaleString()} chars</span>
+                </div>
+            `;
+
+            document.getElementById('sizeEstimate').innerHTML = html;
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
         window.onload = function() {
+            // Carregar config global (não específica de SDR para admin)
             const saved = localStorage.getItem('sdrAgentConfig');
             if (saved) {
                 const config = JSON.parse(saved);
                 document.getElementById('supabaseUrl').value = config.supabaseUrl || '';
                 document.getElementById('supabaseKey').value = config.supabaseKey || '';
                 document.getElementById('apiKey').value = config.apiKey || '';
-                document.getElementById('systemPrompt').value = config.systemPrompt || '';
                 document.getElementById('agentName').value = config.agentName || 'SDR Assistant';
+                
+                document.getElementById('prompt_core').value = config.prompt_core || '';
+                document.getElementById('prompt_produto').value = config.prompt_produto || '';
+                document.getElementById('prompt_arquetipos').value = config.prompt_arquetipos || '';
+                document.getElementById('prompt_linguagem').value = config.prompt_linguagem || '';
+                document.getElementById('prompt_provas').value = config.prompt_provas || '';
+                document.getElementById('prompt_abertura').value = config.prompt_abertura || '';
+                document.getElementById('prompt_transicao').value = config.prompt_transicao || '';
+                document.getElementById('systemPrompt').value = config.systemPrompt || '';
+                
                 agentId = config.agentId || null;
                 
+                moduleFields.forEach(field => updateCharCount(field));
+                
+                if (!config.prompt_core && config.systemPrompt) {
+                    document.getElementById('legacyWarning').style.display = 'block';
+                }
+                
                 if (agentId) {
-                    showLink();
+                    showLinks();
                 }
             }
         };
@@ -301,8 +699,16 @@ Tom de voz: Profissional mas amigável, como se fosse uma conversa entre colegas
             const supabaseUrl = document.getElementById('supabaseUrl').value.trim();
             const supabaseKey = document.getElementById('supabaseKey').value.trim();
             const apiKey = document.getElementById('apiKey').value.trim();
-            const systemPrompt = document.getElementById('systemPrompt').value.trim();
             const agentName = document.getElementById('agentName').value.trim();
+            
+            const prompt_core = document.getElementById('prompt_core').value.trim();
+            const prompt_produto = document.getElementById('prompt_produto').value.trim();
+            const prompt_arquetipos = document.getElementById('prompt_arquetipos').value.trim();
+            const prompt_linguagem = document.getElementById('prompt_linguagem').value.trim();
+            const prompt_provas = document.getElementById('prompt_provas').value.trim();
+            const prompt_abertura = document.getElementById('prompt_abertura').value.trim();
+            const prompt_transicao = document.getElementById('prompt_transicao').value.trim();
+            const systemPrompt = document.getElementById('systemPrompt').value.trim();
 
             if (!supabaseUrl || !supabaseKey) {
                 alert('⚠️ Por favor, configure o Supabase primeiro');
@@ -314,8 +720,8 @@ Tom de voz: Profissional mas amigável, como se fosse uma conversa entre colegas
                 return;
             }
 
-            if (!systemPrompt) {
-                alert('⚠️ Por favor, insira as instruções do sistema');
+            if (!prompt_core && !systemPrompt) {
+                alert('⚠️ Por favor, preencha o módulo CORE ou o Prompt Legado');
                 return;
             }
 
@@ -326,43 +732,63 @@ Tom de voz: Profissional mas amigável, como se fosse uma conversa entre colegas
             try {
                 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+                const agentData = {
+                    name: agentName,
+                    api_key: apiKey,
+                    prompt: systemPrompt || prompt_core,
+                    prompt_core,
+                    prompt_produto,
+                    prompt_arquetipos,
+                    prompt_linguagem,
+                    prompt_provas,
+                    prompt_abertura,
+                    prompt_transicao,
+                    updated_at: new Date().toISOString()
+                };
+
                 if (agentId) {
                     const { error } = await supabase
                         .from('agents')
-                        .update({
-                            prompt: systemPrompt,
-                            name: agentName,
-                            api_key: apiKey,
-                            updated_at: new Date().toISOString()
-                        })
+                        .update(agentData)
                         .eq('id', agentId);
 
                     if (error) throw error;
                 } else {
                     const { data, error } = await supabase
                         .from('agents')
-                        .insert([{
-                            prompt: systemPrompt,
-                            name: agentName,
-                            api_key: apiKey
-                        }])
+                        .insert([agentData])
                         .select();
 
                     if (error) throw error;
                     agentId = data[0].id;
                 }
 
+                // Salvar config global
                 const config = {
                     supabaseUrl,
                     supabaseKey,
                     apiKey,
-                    systemPrompt,
                     agentName,
+                    prompt_core,
+                    prompt_produto,
+                    prompt_arquetipos,
+                    prompt_linguagem,
+                    prompt_provas,
+                    prompt_abertura,
+                    prompt_transicao,
+                    systemPrompt,
                     agentId
                 };
+                
+                // Salvar config global
                 localStorage.setItem('sdrAgentConfig', JSON.stringify(config));
+                
+                // Salvar config para cada SDR também
+                ['thaina', 'gabriel', 'jeni'].forEach(sdr => {
+                    localStorage.setItem(`sdrAgentConfig_${sdr}`, JSON.stringify(config));
+                });
 
-                showLink();
+                showLinks();
                 saveBtn.textContent = '✅ Salvo com sucesso!';
                 setTimeout(() => {
                     saveBtn.textContent = '💾 Salvar Configuração';
@@ -371,22 +797,32 @@ Tom de voz: Profissional mas amigável, como se fosse uma conversa entre colegas
 
             } catch (error) {
                 console.error('Erro:', error);
-                alert('❌ Erro ao salvar: ' + error.message + '\n\nVerifique se você criou as tabelas no Supabase (veja README.md)');
+                
+                if (error.message && error.message.includes('column')) {
+                    alert('❌ Erro: As colunas modulares ainda não existem no banco.\n\nExecute o SQL em add_modular_prompts.sql no Supabase primeiro.');
+                } else {
+                    alert('❌ Erro ao salvar: ' + error.message + '\n\nVerifique se você criou as tabelas no Supabase (veja README.md)');
+                }
+                
                 saveBtn.textContent = '💾 Salvar Configuração';
                 saveBtn.disabled = false;
             }
         }
 
-        function showLink() {
+        function showLinks() {
             const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', '');
-            const shareLink = `${baseUrl}dashboard.html?agent=${agentId}`;
             
-            document.getElementById('shareLink').value = shareLink;
+            // Gerar links para cada SDR
+            ['thaina', 'gabriel', 'jeni'].forEach(sdr => {
+                const shareLink = `${baseUrl}dashboard.html?agent=${agentId}&sdr=${sdr}`;
+                document.getElementById(`shareLink_${sdr}`).value = shareLink;
+            });
+            
             document.getElementById('linkBox').classList.add('active');
         }
 
-        function copyLink() {
-            const linkInput = document.getElementById('shareLink');
+        function copyLink(sdr) {
+            const linkInput = document.getElementById(`shareLink_${sdr}`);
             linkInput.select();
             document.execCommand('copy');
             

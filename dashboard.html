@@ -36,10 +36,44 @@
             font-size: 24px;
         }
 
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .sdr-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 30px;
+        }
+
+        .error-banner {
+            background: #fee2e2;
+            border: 1px solid #f87171;
+            color: #991b1b;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-banner.active {
+            display: block;
+        }
+
+        .error-banner a {
+            color: #991b1b;
+            font-weight: 600;
         }
 
         .stats {
@@ -92,9 +126,14 @@
             transition: all 0.3s ease;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .btn-secondary {
@@ -243,6 +282,12 @@
             margin-bottom: 20px;
         }
 
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -266,22 +311,19 @@
             border-radius: 16px;
             max-width: 500px;
             width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         .modal-header {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 20px;
-            color: #333;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
             font-size: 14px;
             font-weight: 500;
@@ -289,8 +331,8 @@
             margin-bottom: 8px;
         }
 
-        input[type="text"],
-        select {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -299,38 +341,77 @@
             transition: all 0.3s ease;
         }
 
-        input:focus,
-        select:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .modal-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 25px;
+            justify-content: flex-end;
         }
 
-        .modal-buttons .btn {
-            flex: 1;
+        /* SDR Selection Modal */
+        .sdr-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .loading {
+        .sdr-option {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             text-align: center;
-            padding: 40px;
-            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sdr-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .sdr-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .sdr-option-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .sdr-option-name {
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>📊 Dashboard SDR - Social Selling</h1>
-            <div id="userInfo" style="font-size: 14px; opacity: 0.9;"></div>
+            <div>
+                <h1>📊 Dashboard SDR <span class="sdr-badge" id="sdrBadge">-</span></h1>
+                <div class="header-subtitle" id="headerSubtitle">Carregando...</div>
+            </div>
+            <button class="btn" onclick="showNewConversationModal()" id="newConvBtn">➕ Nova Conversa</button>
         </div>
     </div>
 
     <div class="container">
+        <!-- Banner de erro -->
+        <div class="error-banner" id="errorBanner">
+            <strong>⚠️ Erro de configuração:</strong> 
+            <span id="errorMessage">Configuração não encontrada.</span>
+            <br><br>
+            <a href="admin.html">Clique aqui para configurar o assistente</a>
+        </div>
+
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-value" id="totalConversations">0</div>
@@ -351,8 +432,6 @@
         </div>
 
         <div class="controls">
-            <button class="btn" onclick="showNewConversationModal()">➕ Nova Conversa</button>
-            
             <div class="search-box">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchInput" placeholder="Buscar por nome..." oninput="filterBySearch()" />
@@ -366,6 +445,29 @@
 
         <div id="conversationsList" class="conversations-list">
             <div class="loading">Carregando conversas...</div>
+        </div>
+    </div>
+
+    <!-- Modal Seleção de SDR -->
+    <div class="modal" id="sdrSelectionModal">
+        <div class="modal-content">
+            <div class="modal-header">👤 Quem está usando?</div>
+            <p style="margin-bottom: 20px; color: #666;">Selecione seu nome para continuar:</p>
+            
+            <div class="sdr-selection">
+                <div class="sdr-option" onclick="selectSDR('thaina')">
+                    <div class="sdr-option-icon">👩‍💼</div>
+                    <div class="sdr-option-name">Thainá</div>
+                </div>
+                <div class="sdr-option" onclick="selectSDR('gabriel')">
+                    <div class="sdr-option-icon">👨‍💼</div>
+                    <div class="sdr-option-name">Gabriel</div>
+                </div>
+                <div class="sdr-option" onclick="selectSDR('jeni')">
+                    <div class="sdr-option-icon">👩‍💼</div>
+                    <div class="sdr-option-name">Jeni</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -398,46 +500,181 @@
 
             <div class="modal-buttons">
                 <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn" onclick="createConversation()">Criar Conversa</button>
+                <button class="btn" onclick="createConversation()" id="createConvBtn">Criar Conversa</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        let supabaseClient;
-        let agentConfig;
+        // =====================================================
+        // CONFIGURAÇÃO POR SDR
+        // =====================================================
+        const SDR_NAMES = {
+            'thaina': 'Thainá',
+            'gabriel': 'Gabriel',
+            'jeni': 'Jeni'
+        };
+
+        let supabaseClient = null;
+        let agentConfig = null;
+        let agentId = null;
+        let currentSDR = null;
         let currentFilter = 'all';
         let searchTerm = '';
         let conversations = [];
+        let isReady = false;
+
+        // =====================================================
+        // FUNÇÕES DE SDR
+        // =====================================================
+
+        function getStorageKey() {
+            // Cada SDR tem seu próprio localStorage
+            return currentSDR ? `sdrAgentConfig_${currentSDR}` : 'sdrAgentConfig';
+        }
+
+        function selectSDR(sdrId) {
+            currentSDR = sdrId;
+            
+            // Atualizar URL com parâmetro sdr
+            const url = new URL(window.location.href);
+            url.searchParams.set('sdr', sdrId);
+            window.history.replaceState({}, '', url);
+            
+            // Fechar modal e continuar inicialização
+            document.getElementById('sdrSelectionModal').classList.remove('active');
+            continueInit();
+        }
+
+        function showSDRSelection() {
+            document.getElementById('sdrSelectionModal').classList.add('active');
+        }
+
+        // =====================================================
+        // VALIDAÇÃO E INICIALIZAÇÃO
+        // =====================================================
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorBanner').classList.add('active');
+            document.getElementById('newConvBtn').disabled = true;
+        }
+
+        function hideError() {
+            document.getElementById('errorBanner').classList.remove('active');
+            document.getElementById('newConvBtn').disabled = false;
+        }
+
+        function checkReady() {
+            if (!isReady || !supabaseClient) {
+                showError('Sistema não inicializado corretamente. Recarregue a página.');
+                return false;
+            }
+            return true;
+        }
 
         async function init() {
             const urlParams = new URLSearchParams(window.location.search);
-            const agentId = urlParams.get('agent');
+            agentId = urlParams.get('agent');
+            currentSDR = urlParams.get('sdr');
 
             if (!agentId) {
-                alert('❌ Link inválido');
+                showError('Link inválido. Parâmetro "agent" não encontrado na URL.');
+                document.getElementById('conversationsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <p>Link inválido. Verifique a URL ou <a href="admin.html">configure o assistente</a>.</p>
+                    </div>
+                `;
                 return;
             }
 
-            const saved = localStorage.getItem('sdrAgentConfig');
+            // Se não tem SDR na URL, mostrar modal de seleção
+            if (!currentSDR || !SDR_NAMES[currentSDR]) {
+                showSDRSelection();
+                return;
+            }
+
+            continueInit();
+        }
+
+        async function continueInit() {
+            // Atualizar header com nome do SDR
+            const sdrName = SDR_NAMES[currentSDR] || currentSDR;
+            document.getElementById('sdrBadge').textContent = sdrName;
+            document.getElementById('headerSubtitle').textContent = `Logado como: ${sdrName}`;
+            document.title = `Dashboard SDR - ${sdrName}`;
+
+            // Carregar configuração (específica do SDR)
+            const storageKey = getStorageKey();
+            let saved = localStorage.getItem(storageKey);
+            
+            // Fallback: tentar config global se não tiver específica
             if (!saved) {
-                alert('❌ Configuração não encontrada. Configure primeiro no admin.html');
+                saved = localStorage.getItem('sdrAgentConfig');
+                if (saved) {
+                    // Copiar config global para o SDR
+                    localStorage.setItem(storageKey, saved);
+                    console.log(`📋 Config copiada de global para ${storageKey}`);
+                }
+            }
+
+            if (!saved) {
+                showError('Configuração não encontrada no navegador.');
+                document.getElementById('conversationsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚙️</div>
+                        <p>Configure o assistente primeiro em <a href="admin.html?sdr=${currentSDR}">admin.html</a></p>
+                    </div>
+                `;
                 return;
             }
 
-            agentConfig = JSON.parse(saved);
+            try {
+                agentConfig = JSON.parse(saved);
+            } catch (e) {
+                showError('Erro ao ler configuração. Dados corrompidos.');
+                return;
+            }
+
+            // Validar credenciais do Supabase
+            if (!agentConfig.supabaseUrl || !agentConfig.supabaseKey) {
+                showError('Credenciais do Supabase não configuradas.');
+                document.getElementById('conversationsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔑</div>
+                        <p>Configure o Supabase em <a href="admin.html?sdr=${currentSDR}">admin.html</a></p>
+                    </div>
+                `;
+                return;
+            }
+
             agentConfig.agentId = agentId;
-            
-            supabaseClient = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
-            
-            await loadConversations();
-            document.getElementById('filterAll').classList.add('active');
+            agentConfig.sdr = currentSDR;
+
+            try {
+                supabaseClient = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
+                isReady = true;
+                hideError();
+                
+                await loadConversations();
+                document.getElementById('filterAll').classList.add('active');
+            } catch (error) {
+                showError('Erro ao conectar com Supabase: ' + error.message);
+                console.error('Erro de inicialização:', error);
+            }
         }
 
         window.onload = init;
 
+        // =====================================================
+        // FUNÇÕES DE CONVERSAS
+        // =====================================================
+
         async function loadConversations() {
+            if (!checkReady()) return;
+
             try {
                 const { data, error } = await supabaseClient
                     .from('conversations')
@@ -456,6 +693,9 @@
                     <div class="empty-state">
                         <div class="empty-state-icon">❌</div>
                         <p>Erro ao carregar conversas: ${error.message}</p>
+                        <p style="margin-top: 10px; font-size: 12px; color: #888;">
+                            Verifique se as tabelas foram criadas no Supabase.
+                        </p>
                     </div>
                 `;
             }
@@ -492,6 +732,9 @@
                     <div class="empty-state">
                         <div class="empty-state-icon">💬</div>
                         <p>Nenhuma conversa encontrada</p>
+                        <p style="margin-top: 10px; font-size: 14px;">
+                            Clique em "Nova Conversa" para começar
+                        </p>
                     </div>
                 `;
                 return;
@@ -501,13 +744,13 @@
                 <div class="conversation-card" onclick="openConversation('${conv.id}')">
                     <div class="conversation-info">
                         <div class="conversation-header">
-                            <div class="conversation-name">${conv.lead_name}</div>
+                            <div class="conversation-name">${escapeHtml(conv.lead_name)}</div>
                             <div class="platform-badge platform-${conv.platform}">
                                 ${conv.platform === 'instagram' ? '📷 Instagram' : '💼 LinkedIn'}
                             </div>
                         </div>
                         <div class="conversation-meta">
-                            <span>👤 ${conv.profile_url}</span>
+                            <span>👤 ${escapeHtml(conv.profile_url)}</span>
                             <span>🕐 ${new Date(conv.updated_at).toLocaleDateString('pt-BR')}</span>
                         </div>
                     </div>
@@ -518,6 +761,12 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function filterBySearch() {
@@ -537,7 +786,12 @@
             renderConversations();
         }
 
+        // =====================================================
+        // MODAL E CRIAÇÃO DE CONVERSA
+        // =====================================================
+
         function showNewConversationModal() {
+            if (!checkReady()) return;
             document.getElementById('newConversationModal').classList.add('active');
         }
 
@@ -549,6 +803,8 @@
         }
 
         async function createConversation() {
+            if (!checkReady()) return;
+
             const leadName = document.getElementById('leadName').value.trim();
             const platform = document.getElementById('platform').value;
             const profileUrl = document.getElementById('profileUrl').value.trim();
@@ -557,6 +813,10 @@
                 alert('⚠️ Preencha todos os campos');
                 return;
             }
+
+            const btn = document.getElementById('createConvBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Criando...';
 
             try {
                 const { data, error } = await supabaseClient
@@ -580,16 +840,24 @@
             } catch (error) {
                 console.error('Erro:', error);
                 alert('❌ Erro ao criar conversa: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Criar Conversa';
             }
         }
 
         function openConversation(conversationId) {
+            if (!agentConfig) {
+                alert('❌ Configuração não encontrada');
+                return;
+            }
+
             try {
-                // Salvar config no sessionStorage para o chat acessar (funciona com file://)
+                // Salvar config no sessionStorage para o chat acessar
                 sessionStorage.setItem('sdrAgentConfigTemp', JSON.stringify(agentConfig));
                 
                 const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
-                const chatUrl = `${baseUrl}chat.html?agent=${agentConfig.agentId}&conv=${conversationId}`;
+                const chatUrl = `${baseUrl}chat.html?agent=${agentConfig.agentId}&conv=${conversationId}&sdr=${currentSDR}`;
                 
                 window.open(chatUrl, '_blank');
             } catch (error) {

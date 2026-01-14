@@ -42,6 +42,52 @@
         .lead-meta {
             font-size: 14px;
             opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sdr-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .phase-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .phase-abertura {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .phase-transicao {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .phase-objecao {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .phase-agendamento {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .phase-desqualificado {
+            background: #f3f4f6;
+            color: #6b7280;
         }
 
         .status-controls {
@@ -266,13 +312,12 @@
             padding: 12px 24px;
             border-radius: 8px;
             font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 600;
-            height: 50px;
         }
 
-        .send-btn:hover:not(:disabled) {
+        .send-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
@@ -280,14 +325,15 @@
         .send-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
         .typing-indicator {
             display: none;
-            padding: 12px 16px;
+            padding: 12px;
             background: #f1f3f5;
             border-radius: 12px;
-            border-bottom-left-radius: 4px;
+            margin-bottom: 20px;
             width: fit-content;
         }
 
@@ -295,32 +341,33 @@
             display: block;
         }
 
-        .typing-indicator span {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #667eea;
-            margin: 0 2px;
-            animation: typing 1.4s infinite;
+        .typing-dots {
+            display: flex;
+            gap: 4px;
         }
 
-        .typing-indicator span:nth-child(2) {
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(2) {
             animation-delay: 0.2s;
         }
 
-        .typing-indicator span:nth-child(3) {
+        .typing-dots span:nth-child(3) {
             animation-delay: 0.4s;
         }
 
         @keyframes typing {
             0%, 60%, 100% {
                 transform: translateY(0);
-                opacity: 0.4;
             }
             30% {
                 transform: translateY(-10px);
-                opacity: 1;
             }
         }
 
@@ -345,59 +392,81 @@
             background: white;
             padding: 30px;
             border-radius: 16px;
-            max-width: 400px;
+            max-width: 500px;
             width: 90%;
         }
 
         .modal-header {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
+            margin-bottom: 20px;
         }
 
-        textarea.modal-textarea {
+        .modal-input {
             width: 100%;
-            min-height: 100px;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-family: inherit;
-            resize: vertical;
+            font-size: 14px;
+            margin-bottom: 20px;
         }
 
         .modal-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            justify-content: flex-end;
         }
 
-        .modal-buttons .btn {
-            flex: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 12px;
-            border: none;
+        .modal-btn {
+            padding: 10px 20px;
             border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            border: none;
+        }
+
+        .modal-btn-secondary {
+            background: white;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+
+        .modal-btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+
+        /* Rating Modal */
+        .rating-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
         .rating-btn {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border: 2px solid #e0e0e0;
-            background: white;
             border-radius: 8px;
+            background: white;
             font-size: 16px;
             font-weight: 600;
-            color: #666;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .rating-btn:hover {
             border-color: #667eea;
             background: #f8f9ff;
-            transform: scale(1.05);
         }
 
         .rating-btn.selected {
@@ -406,15 +475,38 @@
             border-color: #667eea;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
+        /* Debug panel */
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 11px;
+            max-width: 300px;
+            z-index: 1000;
+            display: none;
         }
 
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .debug-panel.active {
+            display: block;
+        }
+
+        .debug-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 999;
         }
     </style>
 </head>
@@ -423,18 +515,20 @@
         <div class="chat-header-content">
             <div class="lead-info">
                 <h1 id="leadName">Carregando...</h1>
-                <div class="lead-meta" id="leadMeta"></div>
+                <div class="lead-meta" id="leadMeta">
+                    <span>Carregando informações...</span>
+                </div>
             </div>
             <div class="status-controls">
                 <div class="btn-row-1">
-                    <button class="btn" onclick="goHome()" style="background: rgba(255,255,255,0.2);">🏠 Home</button>
-                    <button class="btn" onclick="showRatingModal()" style="background: rgba(255,255,255,0.2);">⭐ Avaliar Conversa</button>
-                    <button class="btn" onclick="showDeleteModal()" style="background: rgba(255,71,87,0.2); border-color: #ff4757;">🗑️ Apagar</button>
+                    <button class="btn" onclick="goHome()">🏠 Dashboard</button>
+                    <button class="btn" onclick="markAsScheduled()">✅ Agendar</button>
+                    <button class="btn" onclick="markAsInProgress()">🟡 Em Andamento</button>
                 </div>
                 <div class="btn-row-2">
-                    <button class="btn" onclick="markAsInProgress()">🟡 Em Andamento</button>
-                    <button class="btn" onclick="markAsScheduled()">✅ Agendado</button>
-                    <button class="btn" onclick="showLostModal()">❌ Marcar Lost</button>
+                    <button class="btn" onclick="showRatingModal()">⭐ Avaliar</button>
+                    <button class="btn" onclick="showLostModal()">❌ Lost</button>
+                    <button class="btn" onclick="showDeleteModal()">🗑️ Apagar</button>
                 </div>
             </div>
         </div>
@@ -442,9 +536,12 @@
 
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
-            <div class="empty-state">
-                <div class="empty-state-icon">💬</div>
-                <p>Comece a conversa informando o que o lead respondeu</p>
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
 
@@ -453,10 +550,38 @@
                 <textarea 
                     class="chat-input" 
                     id="messageInput" 
-                    placeholder="Digite o que o lead respondeu..."
-                    rows="1"
+                    placeholder="Cole aqui a resposta do lead no Instagram/LinkedIn..."
+                    onkeydown="handleKeyDown(event)"
                 ></textarea>
-                <button class="send-btn" id="sendBtn" onclick="sendMessage()">Enviar</button>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">Enviar →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Rating -->
+    <div class="modal" id="ratingModal">
+        <div class="modal-content">
+            <div class="modal-header">⭐ Avaliar Sugestões do Claude</div>
+            <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                De 0 a 10, quanto as sugestões ajudaram nesta conversa?
+            </p>
+            <div class="rating-buttons">
+                <button class="rating-btn" data-rating="0" onclick="selectRating(0)">0</button>
+                <button class="rating-btn" data-rating="1" onclick="selectRating(1)">1</button>
+                <button class="rating-btn" data-rating="2" onclick="selectRating(2)">2</button>
+                <button class="rating-btn" data-rating="3" onclick="selectRating(3)">3</button>
+                <button class="rating-btn" data-rating="4" onclick="selectRating(4)">4</button>
+                <button class="rating-btn" data-rating="5" onclick="selectRating(5)">5</button>
+                <button class="rating-btn" data-rating="6" onclick="selectRating(6)">6</button>
+                <button class="rating-btn" data-rating="7" onclick="selectRating(7)">7</button>
+                <button class="rating-btn" data-rating="8" onclick="selectRating(8)">8</button>
+                <button class="rating-btn" data-rating="9" onclick="selectRating(9)">9</button>
+                <button class="rating-btn" data-rating="10" onclick="selectRating(10)">10</button>
+            </div>
+            <textarea class="modal-input" id="ratingComments" placeholder="Comentários (opcional)"></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-secondary" onclick="closeRatingModal()">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" onclick="saveRating()">Salvar</button>
             </div>
         </div>
     </div>
@@ -465,11 +590,10 @@
     <div class="modal" id="lostModal">
         <div class="modal-content">
             <div class="modal-header">❌ Marcar como Perdida</div>
-            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Por que esta conversa não seguirá em frente?</p>
-            <textarea class="modal-textarea" id="lostReason" placeholder="Ex: Não tem budget, não é decisor, não respondeu mais..."></textarea>
+            <textarea class="modal-input" id="lostReason" placeholder="Motivo (ex: Lead não respondeu, Sem interesse, etc.)"></textarea>
             <div class="modal-buttons">
-                <button class="btn" style="background: #e0e0e0; color: #333;" onclick="closeLostModal()">Cancelar</button>
-                <button class="btn" onclick="markAsLost()">Confirmar</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeLostModal()">Cancelar</button>
+                <button class="modal-btn modal-btn-danger" onclick="markAsLost()">Confirmar Lost</button>
             </div>
         </div>
     </div>
@@ -478,256 +602,697 @@
     <div class="modal" id="deleteModal">
         <div class="modal-content">
             <div class="modal-header">🗑️ Apagar Conversa</div>
-            <p style="color: #d63031; font-size: 14px; margin-bottom: 15px; font-weight: 600;">
-                ⚠️ Esta ação não pode ser desfeita!
+            <p style="margin-bottom: 20px; color: #666;">
+                Tem certeza que deseja apagar esta conversa? Esta ação não pode ser desfeita.
             </p>
-            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
-                Todos os dados desta conversa serão permanentemente deletados, incluindo:
-            </p>
-            <ul style="color: #666; font-size: 13px; margin-left: 20px; margin-bottom: 20px;">
-                <li>Histórico completo de mensagens</li>
-                <li>Informações do lead</li>
-                <li>Status e motivos</li>
-            </ul>
             <div class="modal-buttons">
-                <button class="btn" style="background: #e0e0e0; color: #333;" onclick="closeDeleteModal()">Cancelar</button>
-                <button class="btn" style="background: #d63031;" onclick="deleteConversation()">Apagar Definitivamente</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeDeleteModal()">Cancelar</button>
+                <button class="modal-btn modal-btn-danger" onclick="deleteConversation()">Apagar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Rating -->
-    <div class="modal" id="ratingModal">
-        <div class="modal-content">
-            <div class="modal-header">⭐ Avaliar Conversa</div>
-            <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
-                Avalie a qualidade da sugestão da IA para melhorarmos continuamente:
-            </p>
-            
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-weight: 600; margin-bottom: 10px; color: #333;">
-                    Nota (0-10):
-                </label>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button class="rating-btn" data-rating="0" onclick="selectRating(0)">0</button>
-                    <button class="rating-btn" data-rating="1" onclick="selectRating(1)">1</button>
-                    <button class="rating-btn" data-rating="2" onclick="selectRating(2)">2</button>
-                    <button class="rating-btn" data-rating="3" onclick="selectRating(3)">3</button>
-                    <button class="rating-btn" data-rating="4" onclick="selectRating(4)">4</button>
-                    <button class="rating-btn" data-rating="5" onclick="selectRating(5)">5</button>
-                    <button class="rating-btn" data-rating="6" onclick="selectRating(6)">6</button>
-                    <button class="rating-btn" data-rating="7" onclick="selectRating(7)">7</button>
-                    <button class="rating-btn" data-rating="8" onclick="selectRating(8)">8</button>
-                    <button class="rating-btn" data-rating="9" onclick="selectRating(9)">9</button>
-                    <button class="rating-btn" data-rating="10" onclick="selectRating(10)">10</button>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">
-                    Comentários (opcional):
-                </label>
-                <textarea 
-                    class="modal-textarea" 
-                    id="ratingComments" 
-                    placeholder="O que funcionou bem? O que poderia melhorar?"
-                    style="min-height: 100px;"
-                ></textarea>
-            </div>
-
-            <div class="modal-buttons">
-                <button class="btn" style="background: #e0e0e0; color: #333;" onclick="closeRatingModal()">Cancelar</button>
-                <button class="btn" onclick="saveRating()">Salvar Avaliação</button>
-            </div>
-        </div>
+    <!-- Debug Toggle -->
+    <button class="debug-toggle" onclick="toggleDebug()">🐛 Debug</button>
+    <div class="debug-panel" id="debugPanel">
+        <div id="debugContent">Aguardando...</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
+        // =====================================================
+        // CONFIGURAÇÃO POR SDR
+        // =====================================================
+        const SDR_NAMES = {
+            'thaina': 'Thainá',
+            'gabriel': 'Gabriel',
+            'jeni': 'Jeni'
+        };
+
+        const PROXY_URL = 'https://COLOQUE-SEU-WORKER-AQUI.workers.dev';
+        
         let supabaseClient;
         let agentConfig;
+        let agentPrompts = {};
         let conversationId;
         let conversation;
         let messages = [];
         let selectedRating = null;
+        let debugMode = false;
+        let currentSDR = null;
 
-        // Cloudflare Worker Proxy URL
-        const PROXY_URL = 'https://black-wood-a129.ferramentas-ac3.workers.dev';
+        // =====================================================
+        // FUNÇÕES DE SDR
+        // =====================================================
+
+        function getStorageKey() {
+            return currentSDR ? `sdrAgentConfig_${currentSDR}` : 'sdrAgentConfig';
+        }
+
+        function getSdrName() {
+            return SDR_NAMES[currentSDR] || currentSDR || 'SDR';
+        }
+
+        // =====================================================
+        // SISTEMA MODULAR DE PROMPTS - DETECÇÃO DE VARIÁVEIS
+        // =====================================================
+
+        const areaKeywords = [
+            'marketing', 'growth', 'mídia', 'media', 'performance',
+            'conteúdo', 'conteudo', 'branding', 'brand', 'crm',
+            'produto', 'product', 'aquisição', 'aquisicao',
+            'comunicação', 'comunicacao', 'digital', 'social media',
+            'inbound', 'outbound', 'demand gen', 'demanda',
+            'analytics', 'dados', 'bi', 'seo', 'sem', 'paid media',
+            'lifecycle', 'retention', 'engajamento', 'conversão',
+            'analista de marketing', 'coordenador de marketing',
+            'gerente de marketing', 'head de marketing', 'cmo',
+            'diretor de marketing', 'especialista de marketing',
+            'analista de growth', 'growth manager', 'head de growth',
+            'product marketing', 'pmm', 'brand manager'
+        ];
+
+        const dorKeywords = [
+            'travado', 'travada', 'parado', 'parada', 'estagnado', 'estagnada',
+            'mesmo lugar', 'não saio do lugar', 'não sai do lugar',
+            'patinando', 'girando em círculos',
+            'invisível', 'invisivel', 'ninguém vê', 'ninguem ve',
+            'não reconhecem', 'nao reconhecem', 'não sou visto', 'não sou vista',
+            'faço muito', 'entrego muito', 'trabalho muito',
+            'perdido', 'perdida', 'sem direção', 'sem direcao',
+            'não sei', 'nao sei', 'confuso', 'confusa',
+            'sem rumo', 'sem norte', 'sem foco',
+            'frustrado', 'frustrada', 'cansado', 'cansada',
+            'decepcionado', 'decepcionada', 'desanimado', 'desanimada',
+            'incomodado', 'incomodada',
+            'não me sinto preparado', 'não me sinto preparada',
+            'não sou bom', 'não sou boa', 'impostor', 'impostora',
+            'inseguro', 'insegura',
+            'movimento lateral', 'movimentos laterais',
+            'batendo na trave', 'bate na trave',
+            'quase consigo', 'sempre chego perto'
+        ];
+
+        const ambicaoKeywords = [
+            'quero crescer', 'quero evoluir', 'quero subir',
+            'quero ser promovido', 'quero ser promovida',
+            'quero ganhar mais', 'quero aumentar',
+            'próximo passo', 'proximo passo', 'próximo nível', 'proximo nivel',
+            'virar gerente', 'virar head', 'virar diretor', 'virar diretora',
+            'chegar em', 'chegar a', 'alcançar', 'alcancar',
+            'acelerar', 'alavancar', 'impulsionar',
+            'sair de analista', 'sair de coordenador',
+            'quero mais', 'busco mais', 'mereço mais'
+        ];
+
+        const sessaoKeywords = [
+            'sessão de diagnóstico', 'sessao de diagnostico',
+            'sessão estratégica', 'sessao estrategica',
+            'diagnóstico de carreira', 'diagnostico de carreira',
+            '40 minutos', '40 min', 'gratuita',
+            'quer ver os horários', 'quer agendar'
+        ];
+
+        const objecoes = {
+            dinheiro: [
+                'caro', 'não tenho dinheiro', 'nao tenho dinheiro',
+                'não posso investir', 'nao posso investir',
+                'não tenho grana', 'nao tenho grana',
+                'tá caro', 'ta caro', 'muito caro',
+                'sem dinheiro', 'sem grana', 'sem verba',
+                'não cabe no orçamento', 'orçamento apertado',
+                'momento financeiro', 'financeiramente'
+            ],
+            tempo: [
+                'não tenho tempo', 'nao tenho tempo',
+                'sem tempo', 'muito ocupado', 'muito ocupada',
+                'correria', 'na correria', 'muito atarefado',
+                'agenda cheia', 'agenda lotada', 'agenda apertada',
+                'momento complicado', 'fase corrida'
+            ],
+            duvida: [
+                'não sei se', 'nao sei se',
+                'não sei se é pra mim', 'nao sei se é pra mim',
+                'será que', 'sera que',
+                'tenho dúvida', 'tenho duvida',
+                'não tenho certeza', 'nao tenho certeza',
+                'preciso entender melhor'
+            ],
+            adiamento: [
+                'preciso pensar', 'vou pensar',
+                'depois', 'mais tarde', 'outro momento',
+                'vou ver depois', 'deixa pra depois',
+                'agora não', 'agora nao', 'não é o momento',
+                'talvez mais pra frente', 'quem sabe depois'
+            ]
+        };
+
+        const aceitacaoKeywords = [
+            'quero', 'quero sim', 'bora', 'vamos',
+            'pode ser', 'faz sentido', 'faz sim',
+            'sim', 'claro', 'com certeza',
+            'me interessa', 'tenho interesse',
+            'como funciona', 'como faz', 'como agendo',
+            'qual horário', 'qual horario', 'que horas',
+            'manda o link', 'me manda', 'pode mandar',
+            'tô dentro', 'to dentro', 'fechado',
+            'por mim tudo bem', 'pode agendar'
+        ];
+
+        const recusaKeywords = [
+            'não quero', 'nao quero',
+            'não preciso', 'nao preciso',
+            'não é pra mim', 'nao é pra mim',
+            'não tenho interesse', 'nao tenho interesse',
+            'obrigado mas não', 'obrigada mas não',
+            'agradeço mas', 'valeu mas',
+            'não faz sentido', 'nao faz sentido',
+            'passo', 'vou passar', 'dessa vez não',
+            'não vai rolar', 'nao vai rolar'
+        ];
+
+        const desqualificacaoKeywords = [
+            'sou de rh', 'trabalho com rh', 'recursos humanos',
+            'sou de vendas', 'comercial', 'closer', 'sdr',
+            'sou de ti', 'desenvolvedor', 'programador',
+            'sou de financeiro', 'contabilidade',
+            'sou advogado', 'sou médico', 'sou engenheiro',
+            'só curiosidade', 'so curiosidade',
+            'só olhando', 'so olhando',
+            'só pra saber', 'so pra saber',
+            'tô só acompanhando', 'to so acompanhando'
+        ];
+
+        // =====================================================
+        // FUNÇÕES DE DETECÇÃO
+        // =====================================================
+
+        function detectarArea(mensagensLead) {
+            const textoCompleto = mensagensLead.join(' ').toLowerCase();
+            return areaKeywords.some(keyword => textoCompleto.includes(keyword));
+        }
+
+        function detectarDor(mensagensLead) {
+            const textoCompleto = mensagensLead.join(' ').toLowerCase();
+            const temDor = dorKeywords.some(keyword => textoCompleto.includes(keyword));
+            const temAmbicao = ambicaoKeywords.some(keyword => textoCompleto.includes(keyword));
+            return temDor || temAmbicao;
+        }
+
+        function detectarSessaoProposta(mensagensAssistant) {
+            const textoCompleto = mensagensAssistant.join(' ').toLowerCase();
+            const mencionaSessao = sessaoKeywords.some(keyword => textoCompleto.includes(keyword));
+            const ehProposta = textoCompleto.includes('quer') || 
+                              textoCompleto.includes('faz sentido') ||
+                              textoCompleto.includes('vamos');
+            return mencionaSessao && ehProposta;
+        }
+
+        function detectarObjecao(ultimaMensagemLead) {
+            const texto = ultimaMensagemLead.toLowerCase();
+            
+            for (const [tipo, keywords] of Object.entries(objecoes)) {
+                if (keywords.some(keyword => texto.includes(keyword))) {
+                    return { temObjecao: true, tipoObjecao: tipo };
+                }
+            }
+            
+            return { temObjecao: false, tipoObjecao: null };
+        }
+
+        function detectarAceitacao(ultimaMensagemLead, sessaoProposta) {
+            if (!sessaoProposta) return false;
+            const texto = ultimaMensagemLead.toLowerCase();
+            return aceitacaoKeywords.some(keyword => texto.includes(keyword));
+        }
+
+        function detectarRecusa(ultimaMensagemLead) {
+            const texto = ultimaMensagemLead.toLowerCase();
+            return recusaKeywords.some(keyword => texto.includes(keyword));
+        }
+
+        function detectarDesqualificacao(mensagensLead) {
+            const textoCompleto = mensagensLead.join(' ').toLowerCase();
+            return desqualificacaoKeywords.some(keyword => textoCompleto.includes(keyword));
+        }
+
+        // =====================================================
+        // DETERMINAÇÃO DE ESTADO
+        // =====================================================
+
+        function determinarEstado(variaveis) {
+            const {
+                areaConfirmada,
+                dorIdentificada,
+                sessaoProposta,
+                temObjecao,
+                tipoObjecao,
+                leadAceitou,
+                leadRecusou,
+                leadDesqualificado
+            } = variaveis;
+            
+            if (leadDesqualificado || leadRecusou) {
+                return 'desqualificado';
+            }
+            
+            if (temObjecao) {
+                return 'objecao';
+            }
+            
+            if (sessaoProposta && leadAceitou) {
+                return 'agendamento';
+            }
+            
+            if (areaConfirmada && dorIdentificada && !sessaoProposta) {
+                return 'transicao';
+            }
+            
+            if (sessaoProposta && !leadAceitou && !leadRecusou && !temObjecao) {
+                return 'transicao';
+            }
+            
+            return 'abertura';
+        }
+
+        // =====================================================
+        // CARREGAMENTO DE MÓDULOS
+        // =====================================================
+
+        const modulosPorEstado = {
+            abertura: ['prompt_core', 'prompt_produto', 'prompt_arquetipos', 'prompt_linguagem', 'prompt_abertura'],
+            transicao: ['prompt_core', 'prompt_produto', 'prompt_provas', 'prompt_transicao'],
+            objecao: ['prompt_core', 'prompt_produto', 'prompt_provas', 'prompt_transicao'],
+            agendamento: ['prompt_core', 'prompt_produto', 'prompt_transicao'],
+            desqualificado: ['prompt_core']
+        };
+
+        const instrucoesPorEstado = {
+            abertura: `Você está na fase de ABERTURA/QUALIFICAÇÃO.
+Seu objetivo: Confirmar se o lead é de marketing/growth E identificar uma dor ou ambição.
+- Se ainda não sabe a área, pergunte de forma natural
+- Se ainda não identificou dor, faça perguntas para descobrir
+- Combine perguntas quando possível para ganhar velocidade
+- Assim que tiver AMBOS (área + dor), avance para propor a sessão`,
+
+            transicao: `Você está na fase de TRANSIÇÃO.
+Seu objetivo: Propor a sessão estratégica gratuita.
+- O lead já está qualificado (área + dor confirmados)
+- Conecte a dor dele com a proposta da sessão
+- Seja direta: proponha a sessão de diagnóstico
+- Se ele aceitar, vá para agendamento`,
+
+            objecao: `Você está na fase de OBJEÇÃO.
+O lead levantou uma objeção.
+Seu objetivo: Contornar a objeção de forma empática e não agressiva.
+- Valide o sentimento primeiro
+- Use os scripts de objeção do módulo
+- Lembre que a sessão é GRATUITA (isso resolve maioria das objeções)
+- Após contornar, volte a propor a sessão`,
+
+            agendamento: `Você está na fase de AGENDAMENTO.
+O lead aceitou fazer a sessão!
+Seu objetivo: Fechar o horário.
+- Pergunte preferência de horário (manhã/tarde)
+- Envie o link de agendamento
+- Confirme e encerre de forma positiva`,
+
+            desqualificado: `O lead não é do público-alvo OU recusou explicitamente.
+Seu objetivo: Encerrar de forma gentil e positiva.
+- Agradeça o tempo
+- Deixe porta aberta para o futuro
+- Não insista`
+        };
+
+        function carregarModulos(estado) {
+            const modulosNecessarios = modulosPorEstado[estado] || ['prompt_core'];
+            let promptFinal = '';
+            
+            for (const modulo of modulosNecessarios) {
+                const conteudo = agentPrompts[modulo];
+                if (conteudo && conteudo.trim() !== '') {
+                    promptFinal += conteudo + '\n\n---\n\n';
+                }
+            }
+            
+            return promptFinal;
+        }
+
+        // =====================================================
+        // CONSTRUÇÃO DO PROMPT FINAL
+        // =====================================================
+
+        function buildSystemPrompt(msgs, context) {
+            const mensagensLead = msgs.filter(m => m.role === 'lead').map(m => m.content);
+            const mensagensAssistant = msgs.filter(m => m.role === 'assistant').map(m => m.content);
+            const ultimaMensagemLead = mensagensLead[mensagensLead.length - 1] || '';
+            
+            const areaConfirmada = detectarArea(mensagensLead);
+            const dorIdentificada = detectarDor(mensagensLead);
+            const sessaoProposta = detectarSessaoProposta(mensagensAssistant);
+            const { temObjecao, tipoObjecao } = detectarObjecao(ultimaMensagemLead);
+            const leadAceitou = detectarAceitacao(ultimaMensagemLead, sessaoProposta);
+            const leadRecusou = detectarRecusa(ultimaMensagemLead);
+            const leadDesqualificado = detectarDesqualificacao(mensagensLead);
+            
+            const variaveis = {
+                areaConfirmada,
+                dorIdentificada,
+                sessaoProposta,
+                temObjecao,
+                tipoObjecao,
+                leadAceitou,
+                leadRecusou,
+                leadDesqualificado
+            };
+            
+            const estado = determinarEstado(variaveis);
+            
+            logDebug({
+                variaveis,
+                estado,
+                modulosCarregados: modulosPorEstado[estado],
+                sdr: currentSDR
+            });
+            
+            const temModulos = agentPrompts.prompt_core && agentPrompts.prompt_core.trim() !== '';
+            
+            if (!temModulos) {
+                return agentPrompts.prompt + `
+
+CONTEXTO DA CONVERSA:
+- Lead: ${context.lead_name}
+- Plataforma: ${context.platform === 'instagram' ? 'Instagram' : 'LinkedIn'}
+- Perfil: ${context.profile_url}
+- SDR: ${getSdrName()}
+
+Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. Seja específico e objetivo.`;
+            }
+            
+            const modulos = carregarModulos(estado);
+            
+            const contexto = `
+---
+
+CONTEXTO DESTA CONVERSA:
+- Lead: ${context.lead_name}
+- Plataforma: ${context.platform === 'instagram' ? 'Instagram' : 'LinkedIn'}
+- Perfil: ${context.profile_url}
+- SDR: ${getSdrName()}
+- Estado atual: ${estado.toUpperCase()}
+- Área confirmada: ${areaConfirmada ? 'Sim' : 'Pendente'}
+- Dor identificada: ${dorIdentificada ? 'Sim' : 'Pendente'}
+- Sessão proposta: ${sessaoProposta ? 'Sim' : 'Não'}
+- Objeção detectada: ${tipoObjecao || 'Nenhuma'}
+- Total de mensagens: ${msgs.length}
+
+INSTRUÇÃO PARA ESTE MOMENTO:
+${instrucoesPorEstado[estado]}
+
+Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. Seja específico e objetivo.`;
+
+            return modulos + contexto;
+        }
+
+        // =====================================================
+        // ATUALIZAÇÃO DO INDICADOR DE FASE
+        // =====================================================
+
+        function updatePhaseIndicator() {
+            if (!conversation) return;
+
+            const mensagensLead = messages.filter(m => m.role === 'lead').map(m => m.content);
+            const mensagensAssistant = messages.filter(m => m.role === 'assistant').map(m => m.content);
+            const ultimaMensagemLead = mensagensLead[mensagensLead.length - 1] || '';
+
+            const areaConfirmada = detectarArea(mensagensLead);
+            const dorIdentificada = detectarDor(mensagensLead);
+            const sessaoProposta = detectarSessaoProposta(mensagensAssistant);
+            const { temObjecao, tipoObjecao } = detectarObjecao(ultimaMensagemLead);
+            const leadAceitou = detectarAceitacao(ultimaMensagemLead, sessaoProposta);
+            const leadRecusou = detectarRecusa(ultimaMensagemLead);
+            const leadDesqualificado = detectarDesqualificacao(mensagensLead);
+
+            const estado = determinarEstado({
+                areaConfirmada,
+                dorIdentificada,
+                sessaoProposta,
+                temObjecao,
+                tipoObjecao,
+                leadAceitou,
+                leadRecusou,
+                leadDesqualificado
+            });
+
+            const phaseLabels = {
+                'abertura': '🎯 Abertura',
+                'transicao': '🚀 Transição',
+                'objecao': '⚠️ Objeção',
+                'agendamento': '📅 Agendamento',
+                'desqualificado': '❌ Desqualificado'
+            };
+
+            const phaseClass = {
+                'abertura': 'phase-abertura',
+                'transicao': 'phase-transicao',
+                'objecao': 'phase-objecao',
+                'agendamento': 'phase-agendamento',
+                'desqualificado': 'phase-desqualificado'
+            };
+
+            const statusText = conversation.status === 'open' ? '🟡 Em Aberto' : 
+                               conversation.status === 'scheduled' ? '✅ Agendada' : '❌ Perdida';
+            
+            const leadMeta = document.getElementById('leadMeta');
+            leadMeta.innerHTML = `
+                <span class="sdr-badge">👤 ${getSdrName()}</span>
+                ${conversation.platform === 'instagram' ? '📷 Instagram' : '💼 LinkedIn'} • 
+                ${conversation.profile_url} • 
+                Status: ${statusText}
+                <span class="phase-indicator ${phaseClass[estado]}">${phaseLabels[estado]}${tipoObjecao ? ` (${tipoObjecao})` : ''}</span>
+            `;
+        }
+
+        // =====================================================
+        // DEBUG
+        // =====================================================
+
+        function toggleDebug() {
+            debugMode = !debugMode;
+            document.getElementById('debugPanel').classList.toggle('active', debugMode);
+        }
+
+        function logDebug(data) {
+            if (!debugMode) return;
+            
+            const html = `
+                <div><strong>SDR:</strong> ${data.sdr || '-'}</div>
+                <div><strong>Estado:</strong> ${data.estado}</div>
+                <div><strong>Área:</strong> ${data.variaveis.areaConfirmada ? '✅' : '❌'}</div>
+                <div><strong>Dor:</strong> ${data.variaveis.dorIdentificada ? '✅' : '❌'}</div>
+                <div><strong>Sessão:</strong> ${data.variaveis.sessaoProposta ? '✅' : '❌'}</div>
+                <div><strong>Objeção:</strong> ${data.variaveis.tipoObjecao || 'Nenhuma'}</div>
+                <div><strong>Aceitou:</strong> ${data.variaveis.leadAceitou ? '✅' : '❌'}</div>
+                <div><strong>Módulos:</strong> ${data.modulosCarregados?.length || 0}</div>
+            `;
+            document.getElementById('debugContent').innerHTML = html;
+            
+            console.log('=== DIAGNÓSTICO SDR ASSISTANT ===');
+            console.log('SDR:', data.sdr);
+            console.log('Variáveis:', data.variaveis);
+            console.log('Estado:', data.estado);
+            console.log('Módulos:', data.modulosCarregados);
+            console.log('================================');
+        }
+
+        // =====================================================
+        // FUNÇÕES PRINCIPAIS
+        // =====================================================
 
         async function init() {
             const urlParams = new URLSearchParams(window.location.search);
             const agentId = urlParams.get('agent');
             conversationId = urlParams.get('conv');
+            currentSDR = urlParams.get('sdr');
 
             if (!agentId || !conversationId) {
                 alert('❌ Link inválido. Verifique a URL.');
                 return;
             }
 
-            try {
-                // Tentar sessionStorage primeiro (para file:// local), depois localStorage
-                let saved = sessionStorage.getItem('sdrAgentConfigTemp');
+            if (!currentSDR) {
+                alert('❌ Parâmetro SDR não encontrado. Volte ao dashboard.');
+                return;
+            }
+
+            // Atualizar título
+            document.title = `Chat - ${getSdrName()}`;
+
+            // Tentar carregar config do sessionStorage primeiro
+            let tempConfig = sessionStorage.getItem('sdrAgentConfigTemp');
+            if (tempConfig) {
+                agentConfig = JSON.parse(tempConfig);
+            } else {
+                // Fallback para localStorage específico do SDR
+                const storageKey = getStorageKey();
+                let saved = localStorage.getItem(storageKey);
+                
+                // Fallback para config global
                 if (!saved) {
                     saved = localStorage.getItem('sdrAgentConfig');
                 }
                 
                 if (!saved) {
-                    alert('❌ Configuração não encontrada. Por favor, configure primeiro no admin.html');
+                    alert('❌ Configuração não encontrada. Configure primeiro no admin.html');
                     return;
                 }
-
                 agentConfig = JSON.parse(saved);
-                agentConfig.agentId = agentId;
-                
-                supabaseClient = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
-                
-                await loadConversation();
-                await loadMessages();
-
-                // Auto-resize do textarea
-                const input = document.getElementById('messageInput');
-                input.addEventListener('input', function() {
-                    this.style.height = 'auto';
-                    this.style.height = Math.min(this.scrollHeight, 150) + 'px';
-                });
-
-                // Enter para enviar
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendMessage();
-                    }
-                });
-            } catch (error) {
-                console.error('Erro na inicialização:', error);
-                alert('❌ Erro ao carregar chat: ' + error.message);
             }
+            
+            agentConfig.agentId = agentId;
+            agentConfig.sdr = currentSDR;
+
+            if (!agentConfig.supabaseUrl || !agentConfig.supabaseKey) {
+                alert('❌ Credenciais do Supabase não encontradas. Configure primeiro no admin.html');
+                return;
+            }
+            
+            supabaseClient = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
+
+            await loadAgentPrompts(agentId);
+            await loadConversation();
         }
 
         window.onload = init;
 
-        async function loadConversation() {
+        async function loadAgentPrompts(agentId) {
             try {
                 const { data, error } = await supabaseClient
+                    .from('agents')
+                    .select('prompt, prompt_core, prompt_produto, prompt_arquetipos, prompt_linguagem, prompt_provas, prompt_abertura, prompt_transicao')
+                    .eq('id', agentId)
+                    .single();
+
+                if (error) throw error;
+
+                agentPrompts = {
+                    prompt: data.prompt || agentConfig.systemPrompt || '',
+                    prompt_core: data.prompt_core || agentConfig.prompt_core || '',
+                    prompt_produto: data.prompt_produto || agentConfig.prompt_produto || '',
+                    prompt_arquetipos: data.prompt_arquetipos || agentConfig.prompt_arquetipos || '',
+                    prompt_linguagem: data.prompt_linguagem || agentConfig.prompt_linguagem || '',
+                    prompt_provas: data.prompt_provas || agentConfig.prompt_provas || '',
+                    prompt_abertura: data.prompt_abertura || agentConfig.prompt_abertura || '',
+                    prompt_transicao: data.prompt_transicao || agentConfig.prompt_transicao || ''
+                };
+
+                console.log('📦 Prompts carregados:', Object.keys(agentPrompts).filter(k => agentPrompts[k]).length, 'módulos');
+            } catch (error) {
+                console.warn('⚠️ Erro ao carregar prompts do banco, usando fallback local:', error);
+                agentPrompts = {
+                    prompt: agentConfig.systemPrompt || '',
+                    prompt_core: agentConfig.prompt_core || '',
+                    prompt_produto: agentConfig.prompt_produto || '',
+                    prompt_arquetipos: agentConfig.prompt_arquetipos || '',
+                    prompt_linguagem: agentConfig.prompt_linguagem || '',
+                    prompt_provas: agentConfig.prompt_provas || '',
+                    prompt_abertura: agentConfig.prompt_abertura || '',
+                    prompt_transicao: agentConfig.prompt_transicao || ''
+                };
+            }
+        }
+
+        async function loadConversation() {
+            try {
+                const { data: convData, error: convError } = await supabaseClient
                     .from('conversations')
                     .select('*')
                     .eq('id', conversationId)
                     .single();
 
-                if (error) throw error;
+                if (convError) throw convError;
+                conversation = convData;
 
-                conversation = data;
-                
-                document.getElementById('leadName').textContent = data.lead_name;
-                document.getElementById('leadMeta').innerHTML = `
-                    ${data.platform === 'instagram' ? '📷 Instagram' : '💼 LinkedIn'} • 
-                    ${data.profile_url} • 
-                    Status: ${data.status === 'open' ? '🟡 Em Aberto' : data.status === 'scheduled' ? '✅ Agendada' : '❌ Perdida'}
-                `;
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('❌ Erro ao carregar conversa');
-            }
-        }
+                document.getElementById('leadName').textContent = conversation.lead_name;
+                updatePhaseIndicator();
 
-        async function loadMessages() {
-            try {
-                const { data, error } = await supabaseClient
+                const { data: msgData, error: msgError } = await supabaseClient
                     .from('messages')
                     .select('*')
                     .eq('conversation_id', conversationId)
                     .order('created_at', { ascending: true });
 
-                if (error) throw error;
-
-                messages = data || [];
+                if (msgError) throw msgError;
+                messages = msgData || [];
                 renderMessages();
+                updatePhaseIndicator();
+
             } catch (error) {
                 console.error('Erro:', error);
+                alert('❌ Erro ao carregar conversa: ' + error.message);
             }
         }
 
         function renderMessages() {
-            const messagesContainer = document.getElementById('chatMessages');
+            const container = document.getElementById('chatMessages');
+            const typingIndicator = document.getElementById('typingIndicator');
             
-            if (messages.length === 0) {
-                messagesContainer.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">💬</div>
-                        <p>Comece a conversa informando o que o lead respondeu</p>
-                    </div>
-                `;
-                return;
-            }
-
-            messagesContainer.innerHTML = messages.map(msg => {
-                // Processar markdown apenas para mensagens do assistente
-                const content = msg.role === 'assistant' 
-                    ? marked.parse(msg.content)
-                    : msg.content;
+            let html = '';
+            
+            for (const msg of messages) {
+                const isLead = msg.role === 'lead';
+                const avatar = isLead ? '👤' : '🤖';
+                const label = isLead ? 'Lead respondeu:' : 'Sugestão do Claude:';
                 
-                return `
+                const content = isLead ? msg.content : marked.parse(msg.content);
+                
+                html += `
                     <div class="message ${msg.role}">
-                        <div class="message-avatar">${msg.role === 'lead' ? '👤' : '🤖'}</div>
+                        <div class="message-avatar">${avatar}</div>
                         <div>
-                            <div class="message-label">${msg.role === 'lead' ? 'Lead respondeu:' : 'Sugestão do assistente:'}</div>
+                            <div class="message-label">${label}</div>
                             <div class="message-content">${content}</div>
                         </div>
                     </div>
                 `;
-            }).join('');
-
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            container.innerHTML = html;
+            container.appendChild(typingIndicator);
+            container.scrollTop = container.scrollHeight;
         }
 
         function showTyping(show) {
-            let typingIndicator = document.getElementById('typingIndicator');
-            
-            if (show) {
-                if (!typingIndicator) {
-                    const messagesContainer = document.getElementById('chatMessages');
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = 'message assistant';
-                    messageDiv.id = 'typingIndicator';
-                    
-                    const avatar = document.createElement('div');
-                    avatar.className = 'message-avatar';
-                    avatar.textContent = '🤖';
-                    
-                    const typing = document.createElement('div');
-                    typing.className = 'typing-indicator active';
-                    typing.innerHTML = '<span></span><span></span><span></span>';
-                    
-                    messageDiv.appendChild(avatar);
-                    messageDiv.appendChild(typing);
-                    messagesContainer.appendChild(messageDiv);
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                }
-            } else {
-                if (typingIndicator) {
-                    typingIndicator.remove();
-                }
+            document.getElementById('typingIndicator').classList.toggle('active', show);
+            const container = document.getElementById('chatMessages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
             }
         }
 
         async function sendMessage() {
             const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
+            const content = input.value.trim();
+
+            if (!content) return;
 
             input.disabled = true;
             document.getElementById('sendBtn').disabled = true;
+            input.value = '';
 
             try {
-                // Salvar mensagem do lead
                 const { data: leadMsg, error: leadError } = await supabaseClient
                     .from('messages')
                     .insert([{
                         conversation_id: conversationId,
                         role: 'lead',
-                        content: message
+                        content: content
                     }])
                     .select();
 
@@ -735,13 +1300,9 @@
 
                 messages.push(leadMsg[0]);
                 renderMessages();
-                input.value = '';
-                input.style.height = 'auto';
-
-                // Mostrar typing
                 showTyping(true);
+                updatePhaseIndicator();
 
-                // Preparar contexto para Claude
                 const conversationHistory = messages.map(m => ({
                     role: m.role === 'lead' ? 'user' : 'assistant',
                     content: m.role === 'lead' 
@@ -749,23 +1310,23 @@
                         : m.content
                 }));
 
-                const systemPrompt = `${agentConfig.systemPrompt}
+                const context = {
+                    lead_name: conversation.lead_name,
+                    platform: conversation.platform,
+                    profile_url: conversation.profile_url
+                };
 
-CONTEXTO DA CONVERSA:
-- Lead: ${conversation.lead_name}
-- Plataforma: ${conversation.platform === 'instagram' ? 'Instagram' : 'LinkedIn'}
-- Perfil: ${conversation.profile_url}
+                const systemPrompt = buildSystemPrompt(messages, context);
+                
+                console.log(`📍 [${getSdrName()}] Prompt montado: ${systemPrompt.length} chars`);
 
-Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. Seja específico e objetivo.`;
-
-                // Chamar API do Claude através do proxy Cloudflare Worker
                 const response = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        apiKey: agentConfig.apiKey, // Worker vai extrair e usar isso
+                        apiKey: agentConfig.apiKey,
                         model: 'claude-sonnet-4-20250514',
                         max_tokens: 1024,
                         system: systemPrompt,
@@ -786,7 +1347,6 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                 const data = await response.json();
                 const assistantMessage = data.content[0].text;
 
-                // Salvar resposta do assistente
                 const { data: assistantMsg, error: assistantError } = await supabaseClient
                     .from('messages')
                     .insert([{
@@ -801,8 +1361,8 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                 showTyping(false);
                 messages.push(assistantMsg[0]);
                 renderMessages();
+                updatePhaseIndicator();
 
-                // Atualizar updated_at da conversa
                 await supabaseClient
                     .from('conversations')
                     .update({ updated_at: new Date().toISOString() })
@@ -831,7 +1391,7 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                 if (error) throw error;
 
                 conversation.status = 'scheduled';
-                await loadConversation();
+                updatePhaseIndicator();
                 alert('✅ Conversa marcada como Agendada!');
             } catch (error) {
                 console.error('Erro:', error);
@@ -855,7 +1415,7 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                 if (error) throw error;
 
                 conversation.status = 'open';
-                await loadConversation();
+                updatePhaseIndicator();
                 alert('🟡 Conversa marcada como Em Andamento!');
             } catch (error) {
                 console.error('Erro:', error);
@@ -865,11 +1425,10 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
 
         function goHome() {
             const baseUrl = window.location.origin + window.location.pathname.replace('chat.html', '');
-            window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}`;
+            window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}&sdr=${currentSDR}`;
         }
 
         function showRatingModal() {
-            // Carregar avaliação existente se houver
             if (conversation.rating !== null && conversation.rating !== undefined) {
                 selectedRating = conversation.rating;
                 selectRating(selectedRating);
@@ -886,7 +1445,6 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
             document.getElementById('ratingModal').classList.remove('active');
             selectedRating = null;
             document.getElementById('ratingComments').value = '';
-            // Remover seleção visual
             document.querySelectorAll('.rating-btn').forEach(btn => {
                 btn.classList.remove('selected');
             });
@@ -895,7 +1453,6 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
         function selectRating(rating) {
             selectedRating = rating;
             
-            // Atualizar visual dos botões
             document.querySelectorAll('.rating-btn').forEach(btn => {
                 if (parseInt(btn.dataset.rating) === rating) {
                     btn.classList.add('selected');
@@ -965,9 +1522,8 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
 
                 if (error) throw error;
 
-                // Redirecionar para dashboard
                 const baseUrl = window.location.origin + window.location.pathname.replace('chat.html', '');
-                window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}`;
+                window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}&sdr=${currentSDR}`;
             } catch (error) {
                 console.error('Erro:', error);
                 alert('❌ Erro ao atualizar status');
@@ -984,7 +1540,6 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
 
         async function deleteConversation() {
             try {
-                // Deletar conversa (cascata deleta mensagens automaticamente)
                 const { error } = await supabaseClient
                     .from('conversations')
                     .delete()
@@ -992,9 +1547,8 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
 
                 if (error) throw error;
 
-                // Redirecionar para dashboard
                 const baseUrl = window.location.origin + window.location.pathname.replace('chat.html', '');
-                window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}`;
+                window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}&sdr=${currentSDR}`;
             } catch (error) {
                 console.error('Erro:', error);
                 alert('❌ Erro ao apagar conversa: ' + error.message);
