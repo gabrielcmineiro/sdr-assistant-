@@ -535,8 +535,18 @@
         }
 
         function openConversation(conversationId) {
-            const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
-            window.open(`${baseUrl}chat.html?agent=${agentConfig.agentId}&conv=${conversationId}`, '_blank');
+            try {
+                // Salvar config no sessionStorage para o chat acessar (funciona com file://)
+                sessionStorage.setItem('sdrAgentConfigTemp', JSON.stringify(agentConfig));
+                
+                const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
+                const chatUrl = `${baseUrl}chat.html?agent=${agentConfig.agentId}&conv=${conversationId}`;
+                
+                window.open(chatUrl, '_blank');
+            } catch (error) {
+                console.error('Erro ao abrir conversa:', error);
+                alert('❌ Erro ao abrir conversa: ' + error.message);
+            }
         }
     </script>
 </body>
