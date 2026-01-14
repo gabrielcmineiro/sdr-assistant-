@@ -101,6 +101,8 @@
             background: white;
             color: #667eea;
             border: 2px solid #667eea;
+            padding: 10px 16px;
+            font-size: 15px;
         }
 
         .btn-secondary:hover {
@@ -110,6 +112,36 @@
         .btn-secondary.active {
             background: #667eea;
             color: white;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
         }
 
         .conversations-list {
@@ -320,12 +352,14 @@
         <div class="controls">
             <button class="btn" onclick="showNewConversationModal()">➕ Nova Conversa</button>
             
-            <div style="flex: 1;"></div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar por nome..." oninput="filterBySearch()" />
+            </div>
             
-            <button class="btn-secondary" onclick="filterConversations('all')" id="filterAll" title="Todas">📊</button>
-            <button class="btn-secondary" onclick="filterConversations('open')" id="filterOpen" title="Em Aberto">🟡</button>
-            <button class="btn-secondary" onclick="filterConversations('scheduled')" id="filterScheduled" title="Agendadas">✅</button>
-            <button class="btn-secondary" onclick="filterConversations('lost')" id="filterLost" title="Perdidas">❌</button>
+            <button class="btn-secondary" onclick="filterConversations('all')" id="filterAll">📊 Todas</button>
+            <button class="btn-secondary" onclick="filterConversations('open')" id="filterOpen">🟡 Em Aberto</button>
+            <button class="btn-secondary" onclick="filterConversations('scheduled')" id="filterScheduled">✅ Agendadas</button>
+            <button class="btn-secondary" onclick="filterConversations('lost')" id="filterLost">❌ Perdidas</button>
         </div>
 
         <div id="conversationsList" class="conversations-list">
@@ -372,6 +406,7 @@
         let supabaseClient;
         let agentConfig;
         let currentFilter = 'all';
+        let searchTerm = '';
         let conversations = [];
 
         async function init() {
@@ -437,9 +472,16 @@
         }
 
         function renderConversations() {
-            const filtered = currentFilter === 'all' 
+            let filtered = currentFilter === 'all' 
                 ? conversations 
                 : conversations.filter(c => c.status === currentFilter);
+
+            // Aplicar filtro de busca
+            if (searchTerm) {
+                filtered = filtered.filter(c => 
+                    c.lead_name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
 
             const listEl = document.getElementById('conversationsList');
 
@@ -474,6 +516,11 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function filterBySearch() {
+            searchTerm = document.getElementById('searchInput').value;
+            renderConversations();
         }
 
         function filterConversations(filter) {

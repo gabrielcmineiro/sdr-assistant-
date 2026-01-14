@@ -333,6 +333,8 @@
                 <div class="lead-meta" id="leadMeta"></div>
             </div>
             <div class="status-controls">
+                <button class="btn" onclick="goHome()" style="background: rgba(255,255,255,0.2);">🏠 Home</button>
+                <button class="btn" onclick="markAsInProgress()">🟡 Em Andamento</button>
                 <button class="btn" onclick="markAsScheduled()">✅ Agendado</button>
                 <button class="btn" onclick="showLostModal()">❌ Marcar Lost</button>
                 <button class="btn" onclick="showDeleteModal()" style="background: rgba(255,71,87,0.2); border-color: #ff4757;">🗑️ Apagar</button>
@@ -682,6 +684,35 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                 console.error('Erro:', error);
                 alert('❌ Erro ao atualizar status');
             }
+        }
+
+        async function markAsInProgress() {
+            if (!confirm('🟡 Marcar esta conversa como Em Andamento?')) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('conversations')
+                    .update({ 
+                        status: 'open',
+                        lost_reason: null,
+                        updated_at: new Date().toISOString() 
+                    })
+                    .eq('id', conversationId);
+
+                if (error) throw error;
+
+                conversation.status = 'open';
+                await loadConversation();
+                alert('🟡 Conversa marcada como Em Andamento!');
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro ao atualizar status');
+            }
+        }
+
+        function goHome() {
+            const baseUrl = window.location.origin + window.location.pathname.replace('chat.html', '');
+            window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}`;
         }
 
         function showLostModal() {
