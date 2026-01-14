@@ -333,8 +333,9 @@
                 <div class="lead-meta" id="leadMeta"></div>
             </div>
             <div class="status-controls">
-                <button class="btn" onclick="markAsScheduled()">✅ Agendar</button>
+                <button class="btn" onclick="markAsScheduled()">✅ Agendado</button>
                 <button class="btn" onclick="showLostModal()">❌ Marcar Lost</button>
+                <button class="btn" onclick="showDeleteModal()" style="background: rgba(255,71,87,0.2); border-color: #ff4757;">🗑️ Apagar</button>
             </div>
         </div>
     </div>
@@ -373,6 +374,28 @@
         </div>
     </div>
 
+    <!-- Modal Delete -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">🗑️ Apagar Conversa</div>
+            <p style="color: #d63031; font-size: 14px; margin-bottom: 15px; font-weight: 600;">
+                ⚠️ Esta ação não pode ser desfeita!
+            </p>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                Todos os dados desta conversa serão permanentemente deletados, incluindo:
+            </p>
+            <ul style="color: #666; font-size: 13px; margin-left: 20px; margin-bottom: 20px;">
+                <li>Histórico completo de mensagens</li>
+                <li>Informações do lead</li>
+                <li>Status e motivos</li>
+            </ul>
+            <div class="modal-buttons">
+                <button class="btn" style="background: #e0e0e0; color: #333;" onclick="closeDeleteModal()">Cancelar</button>
+                <button class="btn" style="background: #d63031;" onclick="deleteConversation()">Apagar Definitivamente</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         let supabaseClient;
@@ -380,6 +403,9 @@
         let conversationId;
         let conversation;
         let messages = [];
+
+        // Cloudflare Worker Proxy URL
+        const PROXY_URL = 'https://black-wood-a129.ferramentas-ac3.workers.dev';
 
         async function init() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -577,15 +603,14 @@ CONTEXTO DA CONVERSA:
 
 Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. Seja específico e objetivo.`;
 
-                // Chamar API do Claude
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                // Chamar API do Claude através do proxy Cloudflare Worker
+                const response = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': agentConfig.apiKey,
-                        'anthropic-version': '2023-06-01'
                     },
                     body: JSON.stringify({
+                        apiKey: agentConfig.apiKey, // Worker vai extrair e usar isso
                         model: 'claude-sonnet-4-20250514',
                         max_tokens: 1024,
                         system: systemPrompt,
@@ -594,7 +619,13 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                 });
 
                 if (!response.ok) {
-                    throw new Error('Erro na API do Claude');
+                    const errorData = await response.json().catch(() => ({}));
+                    
+                    if (PROXY_URL.includes('COLOQUE-SEU-WORKER-AQUI')) {
+                        throw new Error('⚠️ Proxy não configurado! Configure o Cloudflare Worker seguindo CLOUDFLARE_SETUP.md');
+                    }
+                    
+                    throw new Error(errorData.error || 'Erro na API do Claude');
                 }
 
                 const data = await response.json();
@@ -682,13 +713,39 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
 
                 if (error) throw error;
 
-                conversation.status = 'lost';
-                closeLostModal();
-                await loadConversation();
-                alert('❌ Conversa marcada como Perdida');
+                // Redirecionar para dashboard
+                const baseUrl = window.location.origin + window.location.pathname.replace('chat.html', '');
+                window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}`;
             } catch (error) {
                 console.error('Erro:', error);
                 alert('❌ Erro ao atualizar status');
+            }
+        }
+
+        function showDeleteModal() {
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        async function deleteConversation() {
+            try {
+                // Deletar conversa (cascata deleta mensagens automaticamente)
+                const { error } = await supabaseClient
+                    .from('conversations')
+                    .delete()
+                    .eq('id', conversationId);
+
+                if (error) throw error;
+
+                // Redirecionar para dashboard
+                const baseUrl = window.location.origin + window.location.pathname.replace('chat.html', '');
+                window.location.href = `${baseUrl}dashboard.html?agent=${agentConfig.agentId}`;
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro ao apagar conversa: ' + error.message);
             }
         }
     </script>
