@@ -369,12 +369,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        let supabase;
+        let supabaseClient;
         let agentConfig;
         let currentFilter = 'all';
         let conversations = [];
 
-        window.onload = async function() {
+        async function init() {
             const urlParams = new URLSearchParams(window.location.search);
             const agentId = urlParams.get('agent');
 
@@ -392,15 +392,17 @@
             agentConfig = JSON.parse(saved);
             agentConfig.agentId = agentId;
             
-            supabase = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
+            supabaseClient = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
             
             await loadConversations();
             document.getElementById('filterAll').classList.add('active');
-        };
+        }
+
+        window.onload = init;
 
         async function loadConversations() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('conversations')
                     .select('*')
                     .eq('agent_id', agentConfig.agentId)
@@ -508,7 +510,7 @@
             }
 
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('conversations')
                     .insert([{
                         agent_id: agentConfig.agentId,

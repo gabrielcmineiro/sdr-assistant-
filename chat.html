@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat - SDR Assistant</title>
+    <title>Chat - Agente Claude</title>
     <style>
         * {
             margin: 0;
@@ -12,90 +12,55 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f6fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             height: 100vh;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .chat-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
-        .chat-header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .lead-info h1 {
-            font-size: 20px;
+        .chat-header h1 {
+            font-size: 24px;
             margin-bottom: 5px;
         }
 
-        .lead-meta {
+        .chat-header p {
             font-size: 14px;
             opacity: 0.9;
-        }
-
-        .status-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            background: white;
-            color: #667eea;
-        }
-
-        .btn.active {
-            background: white;
-            color: #667eea;
-        }
-
-        .chat-container {
-            flex: 1;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow: hidden;
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 30px;
+            background: #f8f9fa;
         }
 
         .message {
             margin-bottom: 20px;
             display: flex;
-            gap: 12px;
+            gap: 15px;
             animation: fadeIn 0.3s ease;
         }
 
@@ -110,22 +75,22 @@
             }
         }
 
-        .message.lead {
+        .message.user {
             flex-direction: row-reverse;
         }
 
         .message-avatar {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
             flex-shrink: 0;
         }
 
-        .message.lead .message-avatar {
+        .message.user .message-avatar {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
@@ -135,92 +100,33 @@
 
         .message-content {
             max-width: 70%;
-            padding: 12px 16px;
+            padding: 15px 20px;
             border-radius: 12px;
             line-height: 1.6;
-            font-size: 14px;
+            font-size: 15px;
         }
 
-        .message.lead .message-content {
+        .message.user .message-content {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-bottom-right-radius: 4px;
         }
 
         .message.assistant .message-content {
-            background: #f1f3f5;
-            color: #333;
-            border-bottom-left-radius: 4px;
-        }
-
-        .message-label {
-            font-size: 11px;
-            color: #888;
-            margin-bottom: 4px;
-        }
-
-        .chat-input-container {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .chat-input-wrapper {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            resize: none;
-            min-height: 50px;
-            max-height: 150px;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .send-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            height: 50px;
-        }
-
-        .send-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
         }
 
         .typing-indicator {
             display: none;
-            padding: 12px 16px;
-            background: #f1f3f5;
+            padding: 15px 20px;
+            background: white;
             border-radius: 12px;
             border-bottom-left-radius: 4px;
             width: fit-content;
+            border: 1px solid #e0e0e0;
         }
 
         .typing-indicator.active {
@@ -256,94 +162,105 @@
             }
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
+        .chat-input-container {
+            padding: 20px 30px;
             background: white;
-            padding: 30px;
-            border-radius: 16px;
-            max-width: 400px;
-            width: 90%;
+            border-top: 1px solid #e0e0e0;
         }
 
-        .modal-header {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        textarea.modal-textarea {
-            width: 100%;
-            min-height: 100px;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-family: inherit;
-            resize: vertical;
-        }
-
-        .modal-buttons {
+        .chat-input-wrapper {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            align-items: flex-end;
         }
 
-        .modal-buttons .btn {
+        .chat-input {
             flex: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 12px;
-            border: none;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            min-height: 50px;
+            max-height: 150px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            height: 50px;
         }
 
-        .empty-state {
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c00;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px;
             text-align: center;
-            padding: 60px 20px;
-            color: #999;
         }
 
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 20px;
+        }
+
+        .loading-screen .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="chat-header">
-        <div class="chat-header-content">
-            <div class="lead-info">
-                <h1 id="leadName">Carregando...</h1>
-                <div class="lead-meta" id="leadMeta"></div>
-            </div>
-            <div class="status-controls">
-                <button class="btn" onclick="markAsScheduled()">✅ Agendar</button>
-                <button class="btn" onclick="showLostModal()">❌ Marcar Lost</button>
-            </div>
-        </div>
-    </div>
-
     <div class="chat-container">
+        <div class="chat-header">
+            <h1 id="agentName">Carregando...</h1>
+            <p>Assistente inteligente powered by Claude</p>
+        </div>
+
         <div class="chat-messages" id="chatMessages">
-            <div class="empty-state">
-                <div class="empty-state-icon">💬</div>
-                <p>Comece a conversa informando o que o lead respondeu</p>
+            <div class="loading-screen" id="loadingScreen">
+                <div class="spinner"></div>
+                <p>Carregando agente...</p>
             </div>
         </div>
 
@@ -352,58 +269,47 @@
                 <textarea 
                     class="chat-input" 
                     id="messageInput" 
-                    placeholder="Digite o que o lead respondeu..."
+                    placeholder="Digite sua mensagem..."
+                    disabled
                     rows="1"
                 ></textarea>
-                <button class="send-btn" id="sendBtn" onclick="sendMessage()">Enviar</button>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>Enviar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Lost -->
-    <div class="modal" id="lostModal">
-        <div class="modal-content">
-            <div class="modal-header">❌ Marcar como Perdida</div>
-            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Por que esta conversa não seguirá em frente?</p>
-            <textarea class="modal-textarea" id="lostReason" placeholder="Ex: Não tem budget, não é decisor, não respondeu mais..."></textarea>
-            <div class="modal-buttons">
-                <button class="btn" style="background: #e0e0e0; color: #333;" onclick="closeLostModal()">Cancelar</button>
-                <button class="btn" onclick="markAsLost()">Confirmar</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        let supabase;
-        let agentConfig;
-        let conversationId;
-        let conversation;
-        let messages = [];
+        let agentConfig = null;
+        let conversationHistory = [];
 
+        // Carregar configuração do agente
         window.onload = async function() {
             const urlParams = new URLSearchParams(window.location.search);
             const agentId = urlParams.get('agent');
-            conversationId = urlParams.get('conv');
 
-            if (!agentId || !conversationId) {
-                alert('❌ Link inválido');
+            if (!agentId) {
+                showError('❌ Link inválido. Este agente não foi encontrado.');
                 return;
             }
 
-            const saved = localStorage.getItem('sdrAgentConfig');
-            if (!saved) {
-                alert('❌ Configuração não encontrada');
+            // Tentar carregar do localStorage (mesma origem)
+            const savedConfig = localStorage.getItem(`agent_${agentId}`);
+            
+            if (!savedConfig) {
+                showError('❌ Agente não encontrado. Verifique se o link está correto.');
                 return;
             }
 
-            agentConfig = JSON.parse(saved);
-            agentConfig.agentId = agentId;
+            agentConfig = JSON.parse(savedConfig);
             
-            supabase = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
-            
-            await loadConversation();
-            await loadMessages();
+            // Atualizar UI
+            document.getElementById('agentName').textContent = agentConfig.agentName || 'Assistente IA';
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('messageInput').disabled = false;
+            document.getElementById('sendBtn').disabled = false;
+
+            // Mensagem de boas-vindas
+            addMessage('assistant', 'Olá! Como posso ajudar você hoje?');
 
             // Auto-resize do textarea
             const input = document.getElementById('messageInput');
@@ -412,7 +318,7 @@
                 this.style.height = Math.min(this.scrollHeight, 150) + 'px';
             });
 
-            // Enter para enviar
+            // Enter para enviar (Shift+Enter para nova linha)
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -421,70 +327,29 @@
             });
         };
 
-        async function loadConversation() {
-            try {
-                const { data, error } = await supabase
-                    .from('conversations')
-                    .select('*')
-                    .eq('id', conversationId)
-                    .single();
-
-                if (error) throw error;
-
-                conversation = data;
-                
-                document.getElementById('leadName').textContent = data.lead_name;
-                document.getElementById('leadMeta').innerHTML = `
-                    ${data.platform === 'instagram' ? '📷 Instagram' : '💼 LinkedIn'} • 
-                    ${data.profile_url} • 
-                    Status: ${data.status === 'open' ? '🟡 Em Aberto' : data.status === 'scheduled' ? '✅ Agendada' : '❌ Perdida'}
-                `;
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('❌ Erro ao carregar conversa');
-            }
+        function showError(message) {
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML = `<div class="error-message">${message}</div>`;
         }
 
-        async function loadMessages() {
-            try {
-                const { data, error } = await supabase
-                    .from('messages')
-                    .select('*')
-                    .eq('conversation_id', conversationId)
-                    .order('created_at', { ascending: true });
-
-                if (error) throw error;
-
-                messages = data || [];
-                renderMessages();
-            } catch (error) {
-                console.error('Erro:', error);
-            }
-        }
-
-        function renderMessages() {
+        function addMessage(role, content) {
             const messagesContainer = document.getElementById('chatMessages');
             
-            if (messages.length === 0) {
-                messagesContainer.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">💬</div>
-                        <p>Comece a conversa informando o que o lead respondeu</p>
-                    </div>
-                `;
-                return;
-            }
-
-            messagesContainer.innerHTML = messages.map(msg => `
-                <div class="message ${msg.role}">
-                    <div class="message-avatar">${msg.role === 'lead' ? '👤' : '🤖'}</div>
-                    <div>
-                        <div class="message-label">${msg.role === 'lead' ? 'Lead respondeu:' : 'Sugestão do assistente:'}</div>
-                        <div class="message-content">${msg.content}</div>
-                    </div>
-                </div>
-            `).join('');
-
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = role === 'user' ? '👤' : '🤖';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = content;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(contentDiv);
+            
+            messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
@@ -522,49 +387,37 @@
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
             
-            if (!message) return;
-
+            if (!message || !agentConfig) return;
+            
+            // Adicionar mensagem do usuário
+            addMessage('user', message);
+            conversationHistory.push({
+                role: 'user',
+                content: message
+            });
+            
+            // Limpar input
+            input.value = '';
+            input.style.height = 'auto';
+            
+            // Desabilitar input durante processamento
             input.disabled = true;
             document.getElementById('sendBtn').disabled = true;
-
+            
+            // Mostrar indicador de digitação
+            showTyping(true);
+            
             try {
-                // Salvar mensagem do lead
-                const { data: leadMsg, error: leadError } = await supabase
-                    .from('messages')
-                    .insert([{
-                        conversation_id: conversationId,
-                        role: 'lead',
-                        content: message
-                    }])
-                    .select();
-
-                if (leadError) throw leadError;
-
-                messages.push(leadMsg[0]);
-                renderMessages();
-                input.value = '';
-                input.style.height = 'auto';
-
-                // Mostrar typing
-                showTyping(true);
-
-                // Preparar contexto para Claude
-                const conversationHistory = messages.map(m => ({
-                    role: m.role === 'lead' ? 'user' : 'assistant',
-                    content: m.role === 'lead' 
-                        ? `Lead respondeu: "${m.content}"`
-                        : m.content
-                }));
-
-                const systemPrompt = `${agentConfig.systemPrompt}
-
-CONTEXTO DA CONVERSA:
-- Lead: ${conversation.lead_name}
-- Plataforma: ${conversation.platform === 'instagram' ? 'Instagram' : 'LinkedIn'}
-- Perfil: ${conversation.profile_url}
-
-Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. Seja específico e objetivo.`;
-
+                // Preparar contexto com arquivos
+                let systemPrompt = agentConfig.systemPrompt;
+                
+                if (agentConfig.files && agentConfig.files.length > 0) {
+                    systemPrompt += '\n\n--- BASE DE CONHECIMENTO ---\n\n';
+                    agentConfig.files.forEach(file => {
+                        systemPrompt += `\n[Arquivo: ${file.name}]\n${file.content}\n`;
+                    });
+                }
+                
                 // Chamar API do Claude
                 const response = await fetch('https://api.anthropic.com/v1/messages', {
                     method: 'POST',
@@ -575,108 +428,36 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                     },
                     body: JSON.stringify({
                         model: 'claude-sonnet-4-20250514',
-                        max_tokens: 1024,
+                        max_tokens: 4096,
                         system: systemPrompt,
                         messages: conversationHistory
                     })
                 });
-
+                
                 if (!response.ok) {
-                    throw new Error('Erro na API do Claude');
+                    const error = await response.json();
+                    throw new Error(error.error?.message || 'Erro ao chamar API');
                 }
-
+                
                 const data = await response.json();
                 const assistantMessage = data.content[0].text;
-
-                // Salvar resposta do assistente
-                const { data: assistantMsg, error: assistantError } = await supabase
-                    .from('messages')
-                    .insert([{
-                        conversation_id: conversationId,
-                        role: 'assistant',
-                        content: assistantMessage
-                    }])
-                    .select();
-
-                if (assistantError) throw assistantError;
-
+                
+                // Adicionar resposta do assistente
                 showTyping(false);
-                messages.push(assistantMsg[0]);
-                renderMessages();
-
-                // Atualizar updated_at da conversa
-                await supabase
-                    .from('conversations')
-                    .update({ updated_at: new Date().toISOString() })
-                    .eq('id', conversationId);
-
+                addMessage('assistant', assistantMessage);
+                conversationHistory.push({
+                    role: 'assistant',
+                    content: assistantMessage
+                });
+                
             } catch (error) {
-                console.error('Erro:', error);
                 showTyping(false);
-                alert('❌ Erro ao enviar mensagem: ' + error.message);
+                addMessage('assistant', `❌ Erro: ${error.message}`);
             } finally {
+                // Reabilitar input
                 input.disabled = false;
                 document.getElementById('sendBtn').disabled = false;
                 input.focus();
-            }
-        }
-
-        async function markAsScheduled() {
-            if (!confirm('✅ Marcar esta conversa como Agendada?')) return;
-
-            try {
-                const { error } = await supabase
-                    .from('conversations')
-                    .update({ status: 'scheduled', updated_at: new Date().toISOString() })
-                    .eq('id', conversationId);
-
-                if (error) throw error;
-
-                conversation.status = 'scheduled';
-                await loadConversation();
-                alert('✅ Conversa marcada como Agendada!');
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('❌ Erro ao atualizar status');
-            }
-        }
-
-        function showLostModal() {
-            document.getElementById('lostModal').classList.add('active');
-        }
-
-        function closeLostModal() {
-            document.getElementById('lostModal').classList.remove('active');
-            document.getElementById('lostReason').value = '';
-        }
-
-        async function markAsLost() {
-            const reason = document.getElementById('lostReason').value.trim();
-
-            if (!reason) {
-                alert('⚠️ Por favor, informe o motivo');
-                return;
-            }
-
-            try {
-                const { error } = await supabase
-                    .from('conversations')
-                    .update({ 
-                        status: 'lost', 
-                        lost_reason: reason,
-                        updated_at: new Date().toISOString() 
-                    })
-                    .eq('id', conversationId);
-
-                if (error) throw error;
-
-                conversation.status = 'lost';
-                closeLostModal();
-                await loadConversation();
-                alert('❌ Conversa marcada como Perdida');
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('❌ Erro ao atualizar status');
             }
         }
     </script>
