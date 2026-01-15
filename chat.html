@@ -630,7 +630,7 @@
             'jeni': 'Jeni'
         };
 
-        const PROXY_URL = 'https://COLOQUE-SEU-WORKER-AQUI.workers.dev';
+        const PROXY_URL = 'https://black-wood-a129.ferramentas-ac3.workers.dev/';
         
         let supabaseClient;
         let agentConfig;
@@ -1337,7 +1337,7 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
                     
-                    if (PROXY_URL.includes('COLOQUE-SEU-WORKER-AQUI')) {
+                    if (PROXY_URL.includes('https://black-wood-a129.ferramentas-ac3.workers.dev/')) {
                         throw new Error('⚠️ Proxy não configurado! Configure o Cloudflare Worker seguindo CLOUDFLARE_SETUP.md');
                     }
                     
