@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Configurar SDR Assistant</title>
+    <title>Admin - SDR Social Selling Assistant</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 16px;
@@ -39,11 +39,69 @@
             margin-bottom: 10px;
         }
 
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
         .content {
-            padding: 40px;
+            padding: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
 
@@ -77,64 +135,52 @@
         textarea {
             min-height: 150px;
             resize: vertical;
-            font-family: 'Monaco', 'Courier New', monospace;
-            line-height: 1.6;
         }
 
-        textarea.large {
-            min-height: 200px;
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
         }
 
-        .btn {
+        .hint {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 14px 30px;
+            padding: 15px 30px;
             border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             width: 100%;
+            transition: all 0.3s ease;
         }
 
-        .btn:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .btn:disabled {
-            opacity: 0.5;
+        .btn-primary:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .alert-info {
-            background: #d1ecf1;
-            border: 1px solid #17a2b8;
-            color: #0c5460;
-        }
-
-        .alert-warning {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-        }
-
         .link-box {
-            background: #f8f9ff;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
             display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: #d4edda;
+            border-radius: 12px;
+            border: 2px solid #28a745;
         }
 
         .link-box.active {
@@ -142,229 +188,170 @@
         }
 
         .link-box h3 {
-            color: #667eea;
-            margin-bottom: 10px;
+            color: #155724;
+            margin-bottom: 15px;
             font-size: 16px;
         }
 
-        .link-display {
+        .link-row {
             display: flex;
             gap: 10px;
-            align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .link-display input {
+        .link-row input {
             flex: 1;
-            background: white;
         }
 
-        .copy-btn {
-            background: #667eea;
+        .btn-copy {
+            background: #28a745;
             color: white;
             border: none;
             padding: 12px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
             white-space: nowrap;
-            font-weight: 600;
         }
 
-        .help-text {
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
-            line-height: 1.5;
-        }
-
-        .config-group {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .config-group h3 {
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        /* Accordion para módulos */
-        .module-group {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
-        .module-group summary {
-            padding: 15px 20px;
-            background: #f8f9fa;
-            cursor: pointer;
-            font-weight: 600;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .module-group summary:hover {
-            background: #e9ecef;
-        }
-
-        .module-group[open] summary {
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .module-content {
-            padding: 20px;
-        }
-
-        .module {
-            margin-bottom: 20px;
-        }
-
-        .module:last-child {
-            margin-bottom: 0;
-        }
-
-        .module label {
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .module small {
-            display: block;
-            color: #888;
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
-
-        .char-count {
-            font-size: 11px;
-            color: #888;
-            text-align: right;
-            margin-top: 4px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .badge-required {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-
-        .badge-optional {
-            background: #e0f2fe;
-            color: #0284c7;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-        }
-
-        .tab {
-            padding: 10px 20px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #666;
-            border-radius: 8px 8px 0 0;
-            transition: all 0.3s ease;
-        }
-
-        .tab:hover {
-            background: #f0f0f0;
-        }
-
-        .tab.active {
-            color: #667eea;
-            background: #f8f9ff;
-            border-bottom: 2px solid #667eea;
-            margin-bottom: -12px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .state-preview {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .state-preview h4 {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .state-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 13px;
-        }
-
-        .state-item:last-child {
-            border-bottom: none;
-        }
-
-        .state-name {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .state-modules {
-            color: #666;
-        }
-
-        /* SDR Links Section */
         .sdr-links {
-            display: grid;
-            gap: 15px;
-            margin-top: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #b8e0c0;
+        }
+
+        .sdr-links h4 {
+            color: #155724;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
 
         .sdr-link-item {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        .sdr-link-item h4 {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 8px;
         }
 
-        .sdr-link-item .link-display {
-            margin-bottom: 0;
+        .sdr-link-item span {
+            font-weight: 600;
+            min-width: 80px;
+        }
+
+        .sdr-link-item input {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .sdr-link-item button {
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .module-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .module-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .module-item:hover {
+            border-color: #667eea;
+        }
+
+        .module-item.filled {
+            border-color: #28a745;
+            background: #f8fff8;
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .module-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .module-status {
+            font-size: 12px;
+        }
+
+        .preview-section {
+            background: #2d3748;
+            border-radius: 12px;
+            padding: 20px;
+            color: #fff;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .preview-label {
+            color: #68d391;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #cce5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
         }
     </style>
 </head>
@@ -372,215 +359,180 @@
     <div class="container">
         <div class="header">
             <h1>⚙️ Configurar SDR Social Selling Assistant</h1>
-            <p>Sistema Modular de Prompts v2.0 - Multi-usuário</p>
+            <p>Sistema Modular de Prompts v2.0 - Configuração Centralizada</p>
         </div>
 
         <div class="content">
-            <div class="alert alert-info" id="setupAlert" style="display: none;">
-                <strong>📋 Setup Inicial:</strong> Você precisa criar uma conta gratuita no Supabase para salvar as conversas. 
-                <a href="https://supabase.com" target="_blank" style="color: #0c5460; font-weight: 600;">Criar conta</a>
-            </div>
+            <div id="alertBox" class="alert"></div>
 
-            <!-- Tabs -->
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('config')">🔧 Configurações</button>
-                <button class="tab" onclick="switchTab('prompts')">💬 Prompts Modulares</button>
-                <button class="tab" onclick="switchTab('preview')">👁️ Preview Estados</button>
+                <button class="tab active" onclick="showTab('config')">🔧 Configurações</button>
+                <button class="tab" onclick="showTab('prompts')">📝 Prompts Modulares</button>
+                <button class="tab" onclick="showTab('preview')">👁️ Preview Estados</button>
             </div>
 
             <!-- Tab: Configurações -->
             <div id="tab-config" class="tab-content active">
-                <div class="config-group">
-                    <h3>📌 Configuração do Banco de Dados (Supabase)</h3>
-                    
-                    <div class="section">
-                        <label for="supabaseUrl">Supabase URL</label>
-                        <input type="text" id="supabaseUrl" placeholder="https://seu-projeto.supabase.co" />
-                        <p class="help-text">Encontre em: Settings → API → Project URL</p>
+                <div class="section">
+                    <div class="section-title">
+                        🔌 Status da Conexão
+                        <span id="connectionStatus" class="status-badge status-disconnected">Verificando...</span>
                     </div>
-
-                    <div class="section">
-                        <label for="supabaseKey">Supabase Anon Key</label>
-                        <input type="password" id="supabaseKey" placeholder="eyJhbGc..." />
-                        <p class="help-text">Encontre em: Settings → API → anon/public key</p>
-                    </div>
+                    <p style="color: #666; font-size: 14px;">
+                        Supabase: <code id="supabaseStatus">-</code>
+                    </p>
                 </div>
 
-                <div class="config-group">
-                    <h3>🔑 Configuração da API Anthropic</h3>
-                    
-                    <div class="section">
-                        <label for="apiKey">API Key da Anthropic</label>
-                        <input type="password" id="apiKey" placeholder="sk-ant-api03-..." />
-                        <p class="help-text">
-                            Obtenha em: <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a>
-                        </p>
+                <div class="section">
+                    <div class="section-title">🔑 Configuração da API Anthropic</div>
+                    <div class="form-group">
+                        <label>API Key da Anthropic</label>
+                        <input type="password" id="apiKey" placeholder="sk-ant-api...">
+                        <p class="hint">Obtenha em: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
                     </div>
                 </div>
 
                 <div class="section">
-                    <label for="agentName">Nome do Assistente</label>
-                    <input type="text" id="agentName" placeholder="SDR Assistant GLA" value="SDR Assistant" />
+                    <div class="section-title">📋 Nome do Assistente</div>
+                    <div class="form-group">
+                        <label>Nome do Assistente</label>
+                        <input type="text" id="agentName" value="SDR Assistant" placeholder="SDR Assistant">
+                    </div>
+                </div>
+
+                <button class="btn-primary" id="saveBtn" onclick="saveConfig()">
+                    💾 Salvar Configuração
+                </button>
+
+                <div class="link-box" id="linkBox">
+                    <h3>✅ Configuração salva com sucesso!</h3>
+                    <p style="margin-bottom: 15px; color: #155724;">Compartilhe os links abaixo com cada SDR:</p>
+                    
+                    <div class="sdr-links">
+                        <h4>🔗 Links por SDR:</h4>
+                        <div class="sdr-link-item">
+                            <span>👤 Thainá:</span>
+                            <input type="text" id="linkThaina" readonly>
+                            <button class="btn-copy" onclick="copyLink('linkThaina')">📋 Copiar</button>
+                        </div>
+                        <div class="sdr-link-item">
+                            <span>👤 Gabriel:</span>
+                            <input type="text" id="linkGabriel" readonly>
+                            <button class="btn-copy" onclick="copyLink('linkGabriel')">📋 Copiar</button>
+                        </div>
+                        <div class="sdr-link-item">
+                            <span>👤 Jeni:</span>
+                            <input type="text" id="linkJeni" readonly>
+                            <button class="btn-copy" onclick="copyLink('linkJeni')">📋 Copiar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Tab: Prompts Modulares -->
             <div id="tab-prompts" class="tab-content">
-                <div class="alert alert-warning" id="legacyWarning" style="display: none;">
-                    ⚠️ Você está usando o formato de prompt legado. Para melhor performance, preencha os módulos abaixo.
+                <div class="alert alert-info active" style="display: block;">
+                    💡 <strong>Dica:</strong> Preencha os módulos de cima para baixo. O sistema combina automaticamente os módulos baseado no estado da conversa.
                 </div>
 
-                <!-- Módulos Principais -->
-                <details class="module-group" open>
-                    <summary>📌 Módulos Principais (sempre carregados)</summary>
-                    <div class="module-content">
-                        <div class="module">
-                            <label>CORE <span class="badge badge-required">Obrigatório</span></label>
-                            <small>Identidade, objetivo, formato de resposta, guardrails</small>
-                            <textarea id="prompt_core" class="large" placeholder="Você é Thainá, assistente de social selling da GLA..."></textarea>
-                            <div class="char-count"><span id="count_core">0</span> caracteres</div>
+                <div class="module-grid">
+                    <div class="module-item" id="module-core">
+                        <div class="module-header">
+                            <span class="module-title">🎯 CORE - Identidade e Comportamento</span>
+                            <span class="module-status" id="status-core">Vazio</span>
                         </div>
-                        
-                        <div class="module">
-                            <label>PRODUTO <span class="badge badge-optional">Opcional</span></label>
-                            <small>Informações sobre a mentoria e sessão estratégica</small>
-                            <textarea id="prompt_produto" placeholder="A GLA oferece mentoria de carreira para profissionais de marketing..."></textarea>
-                            <div class="char-count"><span id="count_produto">0</span> caracteres</div>
-                        </div>
+                        <textarea id="prompt_core" placeholder="Defina quem é o assistente, como ele deve se comportar, tom de voz geral..." onchange="updateModuleStatus('core')"></textarea>
+                        <div class="char-count"><span id="count-core">0</span> caracteres</div>
                     </div>
-                </details>
 
-                <!-- Módulos de Abertura -->
-                <details class="module-group">
-                    <summary>🎯 Módulos de Abertura (fase de qualificação)</summary>
-                    <div class="module-content">
-                        <div class="module">
-                            <label>ARQUÉTIPOS <span class="badge badge-optional">Opcional</span></label>
-                            <small>Os 5 perfis de carreira para identificação</small>
-                            <textarea id="prompt_arquetipos" placeholder="Arquétipo 1: O Estagnado - profissional que..."></textarea>
-                            <div class="char-count"><span id="count_arquetipos">0</span> caracteres</div>
+                    <div class="module-item" id="module-produto">
+                        <div class="module-header">
+                            <span class="module-title">📦 PRODUTO - O que você vende</span>
+                            <span class="module-status" id="status-produto">Vazio</span>
                         </div>
-                        
-                        <div class="module">
-                            <label>LINGUAGEM E DORES <span class="badge badge-optional">Opcional</span></label>
-                            <small>Frases do público, dores comuns, palavras que ressoam</small>
-                            <textarea id="prompt_linguagem" placeholder="Dores comuns: 'estou travado', 'não sou reconhecido'..."></textarea>
-                            <div class="char-count"><span id="count_linguagem">0</span> caracteres</div>
-                        </div>
-                        
-                        <div class="module">
-                            <label>FLUXO DE ABERTURA <span class="badge badge-optional">Opcional</span></label>
-                            <small>Templates de primeira mensagem e qualificação</small>
-                            <textarea id="prompt_abertura" placeholder="Ao iniciar conversa: 1. Cumprimentar..."></textarea>
-                            <div class="char-count"><span id="count_abertura">0</span> caracteres</div>
-                        </div>
+                        <textarea id="prompt_produto" placeholder="Descreva seu produto/serviço, preços, benefícios, diferenciais..." onchange="updateModuleStatus('produto')"></textarea>
+                        <div class="char-count"><span id="count-produto">0</span> caracteres</div>
                     </div>
-                </details>
 
-                <!-- Módulos de Transição -->
-                <details class="module-group">
-                    <summary>🚀 Módulos de Transição (fase de conversão)</summary>
-                    <div class="module-content">
-                        <div class="module">
-                            <label>PROVAS SOCIAIS <span class="badge badge-optional">Opcional</span></label>
-                            <small>Depoimentos, transformações, quotes para gerar credibilidade</small>
-                            <textarea id="prompt_provas" placeholder="Depoimento 1: 'Depois da mentoria eu consegui...'"></textarea>
-                            <div class="char-count"><span id="count_provas">0</span> caracteres</div>
+                    <div class="module-item" id="module-arquetipos">
+                        <div class="module-header">
+                            <span class="module-title">👥 ARQUÉTIPOS - Perfis de Cliente</span>
+                            <span class="module-status" id="status-arquetipos">Vazio</span>
                         </div>
-                        
-                        <div class="module">
-                            <label>FLUXO DE TRANSIÇÃO <span class="badge badge-optional">Opcional</span></label>
-                            <small>Scripts de proposta, objeções, agendamento, follow-up</small>
-                            <textarea id="prompt_transicao" placeholder="Para propor sessão: 'Olha, pelo que você me contou...'"></textarea>
-                            <div class="char-count"><span id="count_transicao">0</span> caracteres</div>
-                        </div>
+                        <textarea id="prompt_arquetipos" placeholder="Descreva os perfis típicos de clientes, suas dores, objetivos..." onchange="updateModuleStatus('arquetipos')"></textarea>
+                        <div class="char-count"><span id="count-arquetipos">0</span> caracteres</div>
                     </div>
-                </details>
 
-                <!-- Prompt Legado -->
-                <details class="module-group">
-                    <summary>📜 Prompt Legado (fallback)</summary>
-                    <div class="module-content">
-                        <div class="module">
-                            <label>PROMPT ÚNICO <span class="badge badge-optional">Fallback</span></label>
-                            <small>Se os módulos acima estiverem vazios, este prompt será usado</small>
-                            <textarea id="systemPrompt" placeholder="Você é um assistente especializado em social selling..."></textarea>
-                            <div class="char-count"><span id="count_legacy">0</span> caracteres</div>
+                    <div class="module-item" id="module-linguagem">
+                        <div class="module-header">
+                            <span class="module-title">💬 LINGUAGEM - Tom e Estilo</span>
+                            <span class="module-status" id="status-linguagem">Vazio</span>
                         </div>
+                        <textarea id="prompt_linguagem" placeholder="Defina o tom de voz, expressões a usar/evitar, estilo de comunicação..." onchange="updateModuleStatus('linguagem')"></textarea>
+                        <div class="char-count"><span id="count-linguagem">0</span> caracteres</div>
                     </div>
-                </details>
+
+                    <div class="module-item" id="module-provas">
+                        <div class="module-header">
+                            <span class="module-title">🏆 PROVAS - Cases e Resultados</span>
+                            <span class="module-status" id="status-provas">Vazio</span>
+                        </div>
+                        <textarea id="prompt_provas" placeholder="Liste cases de sucesso, depoimentos, números e resultados..." onchange="updateModuleStatus('provas')"></textarea>
+                        <div class="char-count"><span id="count-provas">0</span> caracteres</div>
+                    </div>
+
+                    <div class="module-item" id="module-abertura">
+                        <div class="module-header">
+                            <span class="module-title">👋 ABERTURA - Início da Conversa</span>
+                            <span class="module-status" id="status-abertura">Vazio</span>
+                        </div>
+                        <textarea id="prompt_abertura" placeholder="Instruções específicas para o início da conversa, primeiras mensagens..." onchange="updateModuleStatus('abertura')"></textarea>
+                        <div class="char-count"><span id="count-abertura">0</span> caracteres</div>
+                    </div>
+
+                    <div class="module-item" id="module-transicao">
+                        <div class="module-header">
+                            <span class="module-title">🚀 TRANSIÇÃO - Rumo ao Agendamento</span>
+                            <span class="module-status" id="status-transicao">Vazio</span>
+                        </div>
+                        <textarea id="prompt_transicao" placeholder="Como conduzir para o agendamento, quando propor a sessão..." onchange="updateModuleStatus('transicao')"></textarea>
+                        <div class="char-count"><span id="count-transicao">0</span> caracteres</div>
+                    </div>
+
+                    <div class="module-item" id="module-objecoes">
+                        <div class="module-header">
+                            <span class="module-title">⚠️ OBJEÇÕES - Contornando Resistências</span>
+                            <span class="module-status" id="status-objecoes">Vazio</span>
+                        </div>
+                        <textarea id="prompt_objecoes" placeholder="Como lidar com objeções comuns: preço, tempo, preciso pensar..." onchange="updateModuleStatus('objecoes')"></textarea>
+                        <div class="char-count"><span id="count-objecoes">0</span> caracteres</div>
+                    </div>
+                </div>
+
+                <button class="btn-primary" style="margin-top: 30px;" onclick="saveConfig()">
+                    💾 Salvar Prompts
+                </button>
             </div>
 
             <!-- Tab: Preview Estados -->
             <div id="tab-preview" class="tab-content">
-                <div class="state-preview">
-                    <h4>📊 Módulos carregados por Estado</h4>
-                    
-                    <div class="state-item">
-                        <span class="state-name">🎯 ABERTURA</span>
-                        <span class="state-modules">CORE + PRODUTO + ARQUÉTIPOS + LINGUAGEM + ABERTURA</span>
-                    </div>
-                    
-                    <div class="state-item">
-                        <span class="state-name">🚀 TRANSIÇÃO</span>
-                        <span class="state-modules">CORE + PRODUTO + PROVAS + TRANSIÇÃO</span>
-                    </div>
-                    
-                    <div class="state-item">
-                        <span class="state-name">⚠️ OBJEÇÃO</span>
-                        <span class="state-modules">CORE + PRODUTO + PROVAS + TRANSIÇÃO</span>
-                    </div>
-                    
-                    <div class="state-item">
-                        <span class="state-name">📅 AGENDAMENTO</span>
-                        <span class="state-modules">CORE + PRODUTO + TRANSIÇÃO</span>
-                    </div>
-                    
-                    <div class="state-item">
-                        <span class="state-name">❌ DESQUALIFICADO</span>
-                        <span class="state-modules">CORE</span>
+                <div class="section">
+                    <div class="section-title">🔍 Simular Estado da Conversa</div>
+                    <div class="form-group">
+                        <label>Selecione o estado para ver o prompt montado:</label>
+                        <select id="previewState" onchange="updatePreview()" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px;">
+                            <option value="abertura">👋 Abertura (início)</option>
+                            <option value="transicao">🚀 Transição (qualificando)</option>
+                            <option value="objecao">⚠️ Objeção (resistência)</option>
+                            <option value="agendamento">📅 Agendamento (fechando)</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="state-preview" style="margin-top: 20px;">
-                    <h4>📈 Estimativa de Tamanho</h4>
-                    <div id="sizeEstimate">
-                        <p style="color: #666; font-size: 13px;">Preencha os módulos para ver a estimativa de tamanho por estado.</p>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn" onclick="saveConfig()" id="saveBtn" style="margin-top: 20px;">💾 Salvar Configuração</button>
-
-            <div class="link-box" id="linkBox">
-                <h3>✅ Dashboard Configurado!</h3>
-                <p style="font-size: 14px; margin-bottom: 15px; color: #666;">
-                    Links individuais para cada SDR (copie e envie para cada pessoa):
-                </p>
-                
-                <div class="sdr-links">
-                    <div class="sdr-link-item">
-                        <h4>👩‍💼 Thainá</h4>
-                        <div class="link-display">
-                            <input type="text" id="shareLink_thaina" readonly />
-                            <button class="copy-btn" onclick="copyLink('thaina')">📋 Copiar</button>
-                        </div>
-                    </div>
-                    
-                    <div class="sdr-link-item">
-                        <h4>👨‍💼 Gabriel</h4>
-                        <div class="link-display">
-                            <input type="text" id="shareLink_gabriel" readonly />
-                            <button class="copy-btn" onclick="copyLink('gabriel')">📋 Copiar</button>
-                        </div>
-                    </div>
-                    
-                    <div class="sdr-link-item">
-                        <h4>👩‍💼 Jeni</h4>
-                        <div class="link-display">
-                            <input type="text" id="shareLink_jeni" readonly />
-                            <button class="copy-btn" onclick="copyLink('jeni')">📋 Copiar</button>
-                        </div>
+                <div class="section">
+                    <div class="section-title">📋 Prompt que será enviado ao Claude:</div>
+                    <div class="preview-section" id="previewContent">
+                        <span class="preview-label">Selecione um estado acima para ver o preview...</span>
                     </div>
                 </div>
             </div>
@@ -588,140 +540,106 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script>
-        let agentId = null;
+        let supabaseClient;
+        let currentConfig = null;
 
-        const moduleFields = ['prompt_core', 'prompt_produto', 'prompt_arquetipos', 'prompt_linguagem', 'prompt_provas', 'prompt_abertura', 'prompt_transicao', 'systemPrompt'];
-        
-        moduleFields.forEach(field => {
-            const el = document.getElementById(field);
-            if (el) {
-                el.addEventListener('input', () => updateCharCount(field));
+        const moduleFields = ['core', 'produto', 'arquetipos', 'linguagem', 'provas', 'abertura', 'transicao', 'objecoes'];
+
+        // =====================================================
+        // INICIALIZAÇÃO
+        // =====================================================
+
+        window.onload = async function() {
+            // Inicializar Supabase com config centralizada
+            try {
+                supabaseClient = window.supabase.createClient(
+                    CONFIG.SUPABASE_URL,
+                    CONFIG.SUPABASE_ANON_KEY
+                );
+                
+                document.getElementById('supabaseStatus').textContent = CONFIG.SUPABASE_URL;
+                document.getElementById('connectionStatus').textContent = 'Conectado';
+                document.getElementById('connectionStatus').className = 'status-badge status-connected';
+                
+                // Carregar configuração existente
+                await loadConfig();
+                
+            } catch (error) {
+                console.error('Erro ao conectar:', error);
+                document.getElementById('connectionStatus').textContent = 'Erro';
+                document.getElementById('connectionStatus').className = 'status-badge status-disconnected';
+                showAlert('Erro ao conectar com Supabase: ' + error.message, 'error');
             }
-        });
 
-        function updateCharCount(field) {
-            const el = document.getElementById(field);
-            const countEl = document.getElementById('count_' + field.replace('prompt_', '').replace('systemPrompt', 'legacy'));
-            if (el && countEl) {
-                countEl.textContent = el.value.length;
-            }
-            updateSizeEstimate();
-        }
-
-        function updateSizeEstimate() {
-            const sizes = {
-                core: document.getElementById('prompt_core')?.value.length || 0,
-                produto: document.getElementById('prompt_produto')?.value.length || 0,
-                arquetipos: document.getElementById('prompt_arquetipos')?.value.length || 0,
-                linguagem: document.getElementById('prompt_linguagem')?.value.length || 0,
-                provas: document.getElementById('prompt_provas')?.value.length || 0,
-                abertura: document.getElementById('prompt_abertura')?.value.length || 0,
-                transicao: document.getElementById('prompt_transicao')?.value.length || 0
-            };
-
-            const estimates = {
-                abertura: sizes.core + sizes.produto + sizes.arquetipos + sizes.linguagem + sizes.abertura,
-                transicao: sizes.core + sizes.produto + sizes.provas + sizes.transicao,
-                objecao: sizes.core + sizes.produto + sizes.provas + sizes.transicao,
-                agendamento: sizes.core + sizes.produto + sizes.transicao,
-                desqualificado: sizes.core
-            };
-
-            const html = `
-                <div class="state-item">
-                    <span class="state-name">🎯 ABERTURA</span>
-                    <span class="state-modules">~${estimates.abertura.toLocaleString()} chars</span>
-                </div>
-                <div class="state-item">
-                    <span class="state-name">🚀 TRANSIÇÃO</span>
-                    <span class="state-modules">~${estimates.transicao.toLocaleString()} chars</span>
-                </div>
-                <div class="state-item">
-                    <span class="state-name">⚠️ OBJEÇÃO</span>
-                    <span class="state-modules">~${estimates.objecao.toLocaleString()} chars</span>
-                </div>
-                <div class="state-item">
-                    <span class="state-name">📅 AGENDAMENTO</span>
-                    <span class="state-modules">~${estimates.agendamento.toLocaleString()} chars</span>
-                </div>
-                <div class="state-item">
-                    <span class="state-name">❌ DESQUALIFICADO</span>
-                    <span class="state-modules">~${estimates.desqualificado.toLocaleString()} chars</span>
-                </div>
-            `;
-
-            document.getElementById('sizeEstimate').innerHTML = html;
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById('tab-' + tabName).classList.add('active');
-        }
-
-        window.onload = function() {
-            // Carregar config global (não específica de SDR para admin)
-            const saved = localStorage.getItem('sdrAgentConfig');
-            if (saved) {
-                const config = JSON.parse(saved);
-                document.getElementById('supabaseUrl').value = config.supabaseUrl || '';
-                document.getElementById('supabaseKey').value = config.supabaseKey || '';
-                document.getElementById('apiKey').value = config.apiKey || '';
-                document.getElementById('agentName').value = config.agentName || 'SDR Assistant';
-                
-                document.getElementById('prompt_core').value = config.prompt_core || '';
-                document.getElementById('prompt_produto').value = config.prompt_produto || '';
-                document.getElementById('prompt_arquetipos').value = config.prompt_arquetipos || '';
-                document.getElementById('prompt_linguagem').value = config.prompt_linguagem || '';
-                document.getElementById('prompt_provas').value = config.prompt_provas || '';
-                document.getElementById('prompt_abertura').value = config.prompt_abertura || '';
-                document.getElementById('prompt_transicao').value = config.prompt_transicao || '';
-                document.getElementById('systemPrompt').value = config.systemPrompt || '';
-                
-                agentId = config.agentId || null;
-                
-                moduleFields.forEach(field => updateCharCount(field));
-                
-                if (!config.prompt_core && config.systemPrompt) {
-                    document.getElementById('legacyWarning').style.display = 'block';
+            // Setup contadores de caracteres
+            moduleFields.forEach(field => {
+                const textarea = document.getElementById(`prompt_${field}`);
+                if (textarea) {
+                    textarea.addEventListener('input', () => updateCharCount(field));
+                    updateCharCount(field);
                 }
-                
-                if (agentId) {
-                    showLinks();
-                }
-            }
+            });
         };
 
+        // =====================================================
+        // CARREGAR CONFIGURAÇÃO DO SUPABASE
+        // =====================================================
+
+        async function loadConfig() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('agent_config')
+                    .select('*')
+                    .eq('agent_id', CONFIG.DEFAULT_AGENT_ID)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    throw error;
+                }
+
+                if (data) {
+                    currentConfig = data;
+                    
+                    // Preencher campos
+                    document.getElementById('apiKey').value = data.api_key || '';
+                    document.getElementById('agentName').value = data.agent_name || 'SDR Assistant';
+                    
+                    // Preencher prompts
+                    moduleFields.forEach(field => {
+                        const textarea = document.getElementById(`prompt_${field}`);
+                        if (textarea && data[`prompt_${field}`]) {
+                            textarea.value = data[`prompt_${field}`];
+                            updateCharCount(field);
+                            updateModuleStatus(field);
+                        }
+                    });
+
+                    // Mostrar links
+                    showLinks();
+                    
+                    showAlert('✅ Configuração carregada com sucesso!', 'success');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar config:', error);
+                // Não mostrar erro se tabela não existe ainda
+                if (!error.message.includes('does not exist')) {
+                    showAlert('Nenhuma configuração encontrada. Configure abaixo.', 'info');
+                }
+            }
+        }
+
+        // =====================================================
+        // SALVAR CONFIGURAÇÃO NO SUPABASE
+        // =====================================================
+
         async function saveConfig() {
-            const supabaseUrl = document.getElementById('supabaseUrl').value.trim();
-            const supabaseKey = document.getElementById('supabaseKey').value.trim();
             const apiKey = document.getElementById('apiKey').value.trim();
             const agentName = document.getElementById('agentName').value.trim();
-            
-            const prompt_core = document.getElementById('prompt_core').value.trim();
-            const prompt_produto = document.getElementById('prompt_produto').value.trim();
-            const prompt_arquetipos = document.getElementById('prompt_arquetipos').value.trim();
-            const prompt_linguagem = document.getElementById('prompt_linguagem').value.trim();
-            const prompt_provas = document.getElementById('prompt_provas').value.trim();
-            const prompt_abertura = document.getElementById('prompt_abertura').value.trim();
-            const prompt_transicao = document.getElementById('prompt_transicao').value.trim();
-            const systemPrompt = document.getElementById('systemPrompt').value.trim();
-
-            if (!supabaseUrl || !supabaseKey) {
-                alert('⚠️ Por favor, configure o Supabase primeiro');
-                return;
-            }
 
             if (!apiKey) {
-                alert('⚠️ Por favor, insira sua API Key da Anthropic');
-                return;
-            }
-
-            if (!prompt_core && !systemPrompt) {
-                alert('⚠️ Por favor, preencha o módulo CORE ou o Prompt Legado');
+                showAlert('⚠️ Por favor, insira sua API Key da Anthropic', 'error');
                 return;
             }
 
@@ -730,107 +648,158 @@
             saveBtn.textContent = '⏳ Salvando...';
 
             try {
-                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-                const agentData = {
-                    name: agentName,
-                    api_key: apiKey,
-                    prompt: systemPrompt || prompt_core,
-                    prompt_core,
-                    prompt_produto,
-                    prompt_arquetipos,
-                    prompt_linguagem,
-                    prompt_provas,
-                    prompt_abertura,
-                    prompt_transicao,
-                    updated_at: new Date().toISOString()
+                const configData = {
+                    agent_id: CONFIG.DEFAULT_AGENT_ID,
+                    agent_name: agentName || 'SDR Assistant',
+                    api_key: apiKey
                 };
 
-                if (agentId) {
-                    const { error } = await supabase
-                        .from('agents')
-                        .update(agentData)
-                        .eq('id', agentId);
-
-                    if (error) throw error;
-                } else {
-                    const { data, error } = await supabase
-                        .from('agents')
-                        .insert([agentData])
-                        .select();
-
-                    if (error) throw error;
-                    agentId = data[0].id;
-                }
-
-                // Salvar config global
-                const config = {
-                    supabaseUrl,
-                    supabaseKey,
-                    apiKey,
-                    agentName,
-                    prompt_core,
-                    prompt_produto,
-                    prompt_arquetipos,
-                    prompt_linguagem,
-                    prompt_provas,
-                    prompt_abertura,
-                    prompt_transicao,
-                    systemPrompt,
-                    agentId
-                };
-                
-                // Salvar config global
-                localStorage.setItem('sdrAgentConfig', JSON.stringify(config));
-                
-                // Salvar config para cada SDR também
-                ['thaina', 'gabriel', 'jeni'].forEach(sdr => {
-                    localStorage.setItem(`sdrAgentConfig_${sdr}`, JSON.stringify(config));
+                // Adicionar prompts
+                moduleFields.forEach(field => {
+                    const value = document.getElementById(`prompt_${field}`).value.trim();
+                    configData[`prompt_${field}`] = value || null;
                 });
 
+                // Upsert (insert ou update)
+                const { data, error } = await supabaseClient
+                    .from('agent_config')
+                    .upsert(configData, { 
+                        onConflict: 'agent_id',
+                        returning: 'representation'
+                    })
+                    .select();
+
+                if (error) throw error;
+
+                currentConfig = data[0];
                 showLinks();
-                saveBtn.textContent = '✅ Salvo com sucesso!';
+                showAlert('✅ Configuração salva com sucesso!', 'success');
+                
+                saveBtn.textContent = '✅ Salvo!';
                 setTimeout(() => {
                     saveBtn.textContent = '💾 Salvar Configuração';
                     saveBtn.disabled = false;
                 }, 2000);
 
             } catch (error) {
-                console.error('Erro:', error);
-                
-                if (error.message && error.message.includes('column')) {
-                    alert('❌ Erro: As colunas modulares ainda não existem no banco.\n\nExecute o SQL em add_modular_prompts.sql no Supabase primeiro.');
-                } else {
-                    alert('❌ Erro ao salvar: ' + error.message + '\n\nVerifique se você criou as tabelas no Supabase (veja README.md)');
-                }
-                
+                console.error('Erro ao salvar:', error);
+                showAlert('❌ Erro ao salvar: ' + error.message, 'error');
                 saveBtn.textContent = '💾 Salvar Configuração';
                 saveBtn.disabled = false;
             }
         }
 
+        // =====================================================
+        // UI HELPERS
+        // =====================================================
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} active`;
+            
+            setTimeout(() => {
+                alertBox.classList.remove('active');
+            }, 5000);
+        }
+
         function showLinks() {
             const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', '');
+            const agentId = CONFIG.DEFAULT_AGENT_ID;
             
-            // Gerar links para cada SDR
-            ['thaina', 'gabriel', 'jeni'].forEach(sdr => {
-                const shareLink = `${baseUrl}dashboard.html?agent=${agentId}&sdr=${sdr}`;
-                document.getElementById(`shareLink_${sdr}`).value = shareLink;
-            });
+            document.getElementById('linkThaina').value = `${baseUrl}dashboard.html?agent=${agentId}&sdr=thaina`;
+            document.getElementById('linkGabriel').value = `${baseUrl}dashboard.html?agent=${agentId}&sdr=gabriel`;
+            document.getElementById('linkJeni').value = `${baseUrl}dashboard.html?agent=${agentId}&sdr=jeni`;
             
             document.getElementById('linkBox').classList.add('active');
         }
 
-        function copyLink(sdr) {
-            const linkInput = document.getElementById(`shareLink_${sdr}`);
-            linkInput.select();
+        function copyLink(inputId) {
+            const input = document.getElementById(inputId);
+            input.select();
             document.execCommand('copy');
             
             const btn = event.target;
+            const originalText = btn.textContent;
             btn.textContent = '✅ Copiado!';
             setTimeout(() => {
-                btn.textContent = '📋 Copiar';
+                btn.textContent = originalText;
             }, 2000);
+        }
+
+        function updateCharCount(field) {
+            const textarea = document.getElementById(`prompt_${field}`);
+            const counter = document.getElementById(`count-${field}`);
+            if (textarea && counter) {
+                counter.textContent = textarea.value.length;
+            }
+        }
+
+        function updateModuleStatus(field) {
+            const textarea = document.getElementById(`prompt_${field}`);
+            const status = document.getElementById(`status-${field}`);
+            const module = document.getElementById(`module-${field}`);
+            
+            if (textarea && status && module) {
+                if (textarea.value.trim()) {
+                    status.textContent = '✅ Preenchido';
+                    status.style.color = '#28a745';
+                    module.classList.add('filled');
+                } else {
+                    status.textContent = 'Vazio';
+                    status.style.color = '#999';
+                    module.classList.remove('filled');
+                }
+            }
+        }
+
+        function updatePreview() {
+            const state = document.getElementById('previewState').value;
+            const preview = document.getElementById('previewContent');
+            
+            let modules = ['core', 'produto', 'arquetipos', 'linguagem', 'provas'];
+            
+            if (state === 'abertura') {
+                modules.push('abertura');
+            } else if (state === 'transicao') {
+                modules.push('transicao');
+            } else if (state === 'objecao') {
+                modules.push('objecoes');
+            } else if (state === 'agendamento') {
+                modules.push('transicao');
+            }
+
+            let promptText = '';
+            modules.forEach(mod => {
+                const value = document.getElementById(`prompt_${mod}`)?.value?.trim();
+                if (value) {
+                    const labels = {
+                        'core': '=== IDENTIDADE E COMPORTAMENTO ===',
+                        'produto': '=== PRODUTO/SERVIÇO ===',
+                        'arquetipos': '=== PERFIS DE CLIENTE ===',
+                        'linguagem': '=== TOM E LINGUAGEM ===',
+                        'provas': '=== CASES E PROVAS ===',
+                        'abertura': '=== INSTRUÇÕES DE ABERTURA ===',
+                        'transicao': '=== INSTRUÇÕES DE TRANSIÇÃO ===',
+                        'objecoes': '=== CONTORNO DE OBJEÇÕES ==='
+                    };
+                    promptText += `<span class="preview-label">${labels[mod]}</span>\n${value}\n\n`;
+                }
+            });
+
+            if (!promptText) {
+                promptText = '<span class="preview-label">Nenhum módulo preenchido ainda...</span>';
+            }
+
+            preview.innerHTML = promptText;
         }
     </script>
 </body>

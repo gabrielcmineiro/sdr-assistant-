@@ -34,21 +34,40 @@
 
         .header h1 {
             font-size: 24px;
-        }
-
-        .header-subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .sdr-badge {
             display: inline-block;
             background: rgba(255,255,255,0.2);
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            margin-left: 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .btn-new {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-new:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .container {
@@ -61,8 +80,8 @@
             background: #fee2e2;
             border: 1px solid #f87171;
             color: #991b1b;
-            padding: 15px 20px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 12px;
             margin-bottom: 20px;
             display: none;
         }
@@ -76,7 +95,7 @@
             font-weight: 600;
         }
 
-        .stats {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
@@ -85,72 +104,29 @@
 
         .stat-card {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .stat-value {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
             color: #667eea;
-            margin-bottom: 5px;
         }
 
         .stat-label {
             color: #666;
             font-size: 14px;
+            margin-top: 5px;
         }
 
-        .controls {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+        .filters {
             display: flex;
             gap: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
             align-items: center;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-            padding: 10px 16px;
-            font-size: 15px;
-        }
-
-        .btn-secondary:hover {
-            background: #f8f9ff;
-        }
-
-        .btn-secondary.active {
-            background: #667eea;
-            color: white;
         }
 
         .search-box {
@@ -161,120 +137,125 @@
 
         .search-box input {
             width: 100%;
-            padding: 10px 16px 10px 40px;
+            padding: 12px 16px 12px 45px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 14px;
-            transition: all 0.3s ease;
         }
 
         .search-box input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .search-icon {
             position: absolute;
-            left: 12px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
-            pointer-events: none;
-            z-index: 1;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
         }
 
         .conversations-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .conversation-card {
             background: white;
-            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .conversation-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .conversation-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        .conversation-item:hover {
+            background: #f8f9ff;
         }
 
-        .conversation-info {
+        .conversation-item:last-child {
+            border-bottom: none;
+        }
+
+        .conv-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .conv-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .conv-info {
             flex: 1;
         }
 
-        .conversation-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .conversation-name {
-            font-size: 18px;
+        .conv-name {
             font-weight: 600;
             color: #333;
+            margin-bottom: 4px;
         }
 
-        .platform-badge {
-            padding: 4px 12px;
-            border-radius: 12px;
+        .conv-meta {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .conv-status {
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
         }
 
-        .platform-instagram {
-            background: #ffeef8;
-            color: #e1306c;
-        }
-
-        .platform-linkedin {
-            background: #e7f3ff;
-            color: #0077b5;
-        }
-
-        .conversation-meta {
-            color: #666;
-            font-size: 14px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
         .status-open {
-            background: #fff3cd;
-            color: #856404;
+            background: #fef3c7;
+            color: #92400e;
         }
 
         .status-scheduled {
-            background: #d4edda;
-            color: #155724;
+            background: #d1fae5;
+            color: #065f46;
         }
 
         .status-lost {
-            background: #f8d7da;
-            color: #721c24;
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .empty-state {
-            background: white;
-            padding: 60px 20px;
-            border-radius: 12px;
             text-align: center;
-            color: #666;
+            padding: 60px 20px;
+            color: #999;
         }
 
         .empty-state-icon {
@@ -282,12 +263,7 @@
             margin-bottom: 20px;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -319,33 +295,18 @@
             margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .form-group input,
-        .form-group select {
+        .modal-input {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 14px;
-            transition: all 0.3s ease;
+            margin-bottom: 15px;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .modal-input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .modal-buttons {
@@ -354,41 +315,55 @@
             justify-content: flex-end;
         }
 
-        /* SDR Selection Modal */
-        .sdr-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        .sdr-option {
-            padding: 20px;
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .modal-btn-secondary {
+            background: white;
+            color: #666;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+        }
+
+        .platform-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .platform-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
             cursor: pointer;
+            text-align: center;
             transition: all 0.3s ease;
         }
 
-        .sdr-option:hover {
+        .platform-btn:hover {
+            border-color: #667eea;
+        }
+
+        .platform-btn.selected {
             border-color: #667eea;
             background: #f8f9ff;
         }
 
-        .sdr-option.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .sdr-option-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .sdr-option-name {
-            font-weight: 600;
+        .platform-btn .icon {
+            font-size: 24px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -396,77 +371,54 @@
     <div class="header">
         <div class="header-content">
             <div>
-                <h1>📊 Dashboard SDR <span class="sdr-badge" id="sdrBadge">-</span></h1>
-                <div class="header-subtitle" id="headerSubtitle">Carregando...</div>
+                <h1>📊 Dashboard SDR <span class="sdr-badge" id="sdrBadge">Carregando...</span></h1>
+                <div class="header-subtitle" id="headerSubtitle">Logado como: ...</div>
             </div>
-            <button class="btn" onclick="showNewConversationModal()" id="newConvBtn">➕ Nova Conversa</button>
+            <button class="btn-new" onclick="showNewConversationModal()">➕ Nova Conversa</button>
         </div>
     </div>
 
     <div class="container">
-        <!-- Banner de erro -->
         <div class="error-banner" id="errorBanner">
-            <strong>⚠️ Erro de configuração:</strong> 
-            <span id="errorMessage">Configuração não encontrada.</span>
+            <strong>⚠️ Erro de configuração:</strong> <span id="errorMessage"></span>
             <br><br>
             <a href="admin.html">Clique aqui para configurar o assistente</a>
         </div>
 
-        <div class="stats">
+        <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-value" id="totalConversations">0</div>
+                <div class="stat-value" id="statTotal">0</div>
                 <div class="stat-label">Total de Conversas</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="openConversations">0</div>
+                <div class="stat-value" id="statOpen">0</div>
                 <div class="stat-label">Em Aberto</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="scheduledConversations">0</div>
+                <div class="stat-value" id="statScheduled">0</div>
                 <div class="stat-label">Agendadas</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="lostConversations">0</div>
+                <div class="stat-value" id="statLost">0</div>
                 <div class="stat-label">Perdidas</div>
             </div>
         </div>
 
-        <div class="controls">
+        <div class="filters">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Buscar por nome..." oninput="filterBySearch()" />
+                <input type="text" id="searchInput" placeholder="Buscar por nome..." oninput="filterConversations()">
             </div>
-            
-            <button class="btn-secondary" onclick="filterConversations('all')" id="filterAll">📊 Todas</button>
-            <button class="btn-secondary" onclick="filterConversations('open')" id="filterOpen">🟡 Em Aberto</button>
-            <button class="btn-secondary" onclick="filterConversations('scheduled')" id="filterScheduled">✅ Agendadas</button>
-            <button class="btn-secondary" onclick="filterConversations('lost')" id="filterLost">❌ Perdidas</button>
+            <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">📊 Todas</button>
+            <button class="filter-btn" data-filter="open" onclick="setFilter('open')">🟡 Em Aberto</button>
+            <button class="filter-btn" data-filter="scheduled" onclick="setFilter('scheduled')">✅ Agendadas</button>
+            <button class="filter-btn" data-filter="lost" onclick="setFilter('lost')">❌ Perdidas</button>
         </div>
 
-        <div id="conversationsList" class="conversations-list">
-            <div class="loading">Carregando conversas...</div>
-        </div>
-    </div>
-
-    <!-- Modal Seleção de SDR -->
-    <div class="modal" id="sdrSelectionModal">
-        <div class="modal-content">
-            <div class="modal-header">👤 Quem está usando?</div>
-            <p style="margin-bottom: 20px; color: #666;">Selecione seu nome para continuar:</p>
-            
-            <div class="sdr-selection">
-                <div class="sdr-option" onclick="selectSDR('thaina')">
-                    <div class="sdr-option-icon">👩‍💼</div>
-                    <div class="sdr-option-name">Thainá</div>
-                </div>
-                <div class="sdr-option" onclick="selectSDR('gabriel')">
-                    <div class="sdr-option-icon">👨‍💼</div>
-                    <div class="sdr-option-name">Gabriel</div>
-                </div>
-                <div class="sdr-option" onclick="selectSDR('jeni')">
-                    <div class="sdr-option-icon">👩‍💼</div>
-                    <div class="sdr-option-name">Jeni</div>
-                </div>
+        <div class="conversations-list" id="conversationsList">
+            <div class="empty-state">
+                <div class="empty-state-icon">💬</div>
+                <p>Carregando conversas...</p>
             </div>
         </div>
     </div>
@@ -476,210 +428,137 @@
         <div class="modal-content">
             <div class="modal-header">➕ Nova Conversa</div>
             
-            <div class="form-group">
-                <label for="leadName">Nome do Lead *</label>
-                <input type="text" id="leadName" placeholder="Ex: João Silva" required />
+            <div class="platform-selector">
+                <div class="platform-btn selected" data-platform="instagram" onclick="selectPlatform('instagram')">
+                    <div class="icon">📷</div>
+                    <div>Instagram</div>
+                </div>
+                <div class="platform-btn" data-platform="linkedin" onclick="selectPlatform('linkedin')">
+                    <div class="icon">💼</div>
+                    <div>LinkedIn</div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="platform">Plataforma *</label>
-                <select id="platform" required>
-                    <option value="">Selecione...</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="linkedin">LinkedIn</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="profileUrl">Perfil *</label>
-                <input type="text" id="profileUrl" placeholder="@usuario ou https://linkedin.com/in/usuario" required />
-                <p style="font-size: 12px; color: #888; margin-top: 5px;">
-                    Instagram: @usuario | LinkedIn: URL completo
-                </p>
-            </div>
+            <input type="text" class="modal-input" id="leadName" placeholder="Nome do Lead">
+            <input type="text" class="modal-input" id="profileUrl" placeholder="@ ou URL do perfil">
 
             <div class="modal-buttons">
-                <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn" onclick="createConversation()" id="createConvBtn">Criar Conversa</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="modal-btn modal-btn-primary" id="createBtn" onclick="createConversation()">Criar Conversa</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script>
         // =====================================================
-        // CONFIGURAÇÃO POR SDR
+        // VARIÁVEIS GLOBAIS
         // =====================================================
+        
         const SDR_NAMES = {
             'thaina': 'Thainá',
             'gabriel': 'Gabriel',
             'jeni': 'Jeni'
         };
 
-        let supabaseClient = null;
-        let agentConfig = null;
-        let agentId = null;
-        let currentSDR = null;
-        let currentFilter = 'all';
-        let searchTerm = '';
+        let supabaseClient;
+        let agentConfig;
         let conversations = [];
-        let isReady = false;
+        let currentFilter = 'all';
+        let currentSDR = null;
+        let selectedPlatform = 'instagram';
 
         // =====================================================
-        // FUNÇÕES DE SDR
+        // INICIALIZAÇÃO
         // =====================================================
 
-        function getStorageKey() {
-            // Cada SDR tem seu próprio localStorage
-            return currentSDR ? `sdrAgentConfig_${currentSDR}` : 'sdrAgentConfig';
-        }
-
-        function selectSDR(sdrId) {
-            currentSDR = sdrId;
+        window.onload = async function() {
+            console.log('🚀 Iniciando dashboard...');
             
-            // Atualizar URL com parâmetro sdr
-            const url = new URL(window.location.href);
-            url.searchParams.set('sdr', sdrId);
-            window.history.replaceState({}, '', url);
-            
-            // Fechar modal e continuar inicialização
-            document.getElementById('sdrSelectionModal').classList.remove('active');
-            continueInit();
-        }
-
-        function showSDRSelection() {
-            document.getElementById('sdrSelectionModal').classList.add('active');
-        }
-
-        // =====================================================
-        // VALIDAÇÃO E INICIALIZAÇÃO
-        // =====================================================
-
-        function showError(message) {
-            document.getElementById('errorMessage').textContent = message;
-            document.getElementById('errorBanner').classList.add('active');
-            document.getElementById('newConvBtn').disabled = true;
-        }
-
-        function hideError() {
-            document.getElementById('errorBanner').classList.remove('active');
-            document.getElementById('newConvBtn').disabled = false;
-        }
-
-        function checkReady() {
-            if (!isReady || !supabaseClient) {
-                showError('Sistema não inicializado corretamente. Recarregue a página.');
-                return false;
-            }
-            return true;
-        }
-
-        async function init() {
+            // Obter SDR da URL
             const urlParams = new URLSearchParams(window.location.search);
-            agentId = urlParams.get('agent');
             currentSDR = urlParams.get('sdr');
 
-            if (!agentId) {
-                showError('Link inválido. Parâmetro "agent" não encontrado na URL.');
-                document.getElementById('conversationsList').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">❌</div>
-                        <p>Link inválido. Verifique a URL ou <a href="admin.html">configure o assistente</a>.</p>
-                    </div>
-                `;
+            if (!currentSDR) {
+                showError('Parâmetro SDR não encontrado na URL. Use o link correto do admin.');
                 return;
             }
 
-            // Se não tem SDR na URL, mostrar modal de seleção
-            if (!currentSDR || !SDR_NAMES[currentSDR]) {
-                showSDRSelection();
-                return;
-            }
-
-            continueInit();
-        }
-
-        async function continueInit() {
-            // Atualizar header com nome do SDR
+            // Atualizar UI com nome do SDR
             const sdrName = SDR_NAMES[currentSDR] || currentSDR;
             document.getElementById('sdrBadge').textContent = sdrName;
             document.getElementById('headerSubtitle').textContent = `Logado como: ${sdrName}`;
-            document.title = `Dashboard SDR - ${sdrName}`;
-
-            // Carregar configuração (específica do SDR)
-            const storageKey = getStorageKey();
-            let saved = localStorage.getItem(storageKey);
-            
-            // Fallback: tentar config global se não tiver específica
-            if (!saved) {
-                saved = localStorage.getItem('sdrAgentConfig');
-                if (saved) {
-                    // Copiar config global para o SDR
-                    localStorage.setItem(storageKey, saved);
-                    console.log(`📋 Config copiada de global para ${storageKey}`);
-                }
-            }
-
-            if (!saved) {
-                showError('Configuração não encontrada no navegador.');
-                document.getElementById('conversationsList').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">⚙️</div>
-                        <p>Configure o assistente primeiro em <a href="admin.html?sdr=${currentSDR}">admin.html</a></p>
-                    </div>
-                `;
-                return;
-            }
+            document.title = `Dashboard - ${sdrName}`;
 
             try {
-                agentConfig = JSON.parse(saved);
-            } catch (e) {
-                showError('Erro ao ler configuração. Dados corrompidos.');
-                return;
-            }
+                // Inicializar Supabase
+                supabaseClient = window.supabase.createClient(
+                    CONFIG.SUPABASE_URL,
+                    CONFIG.SUPABASE_ANON_KEY
+                );
 
-            // Validar credenciais do Supabase
-            if (!agentConfig.supabaseUrl || !agentConfig.supabaseKey) {
-                showError('Credenciais do Supabase não configuradas.');
-                document.getElementById('conversationsList').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🔑</div>
-                        <p>Configure o Supabase em <a href="admin.html?sdr=${currentSDR}">admin.html</a></p>
-                    </div>
-                `;
-                return;
-            }
+                // Carregar configuração do Supabase
+                await loadAgentConfig();
 
-            agentConfig.agentId = agentId;
-            agentConfig.sdr = currentSDR;
-
-            try {
-                supabaseClient = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
-                isReady = true;
-                hideError();
-                
+                // Carregar conversas
                 await loadConversations();
-                document.getElementById('filterAll').classList.add('active');
-            } catch (error) {
-                showError('Erro ao conectar com Supabase: ' + error.message);
-                console.error('Erro de inicialização:', error);
-            }
-        }
 
-        window.onload = init;
+            } catch (error) {
+                console.error('Erro na inicialização:', error);
+                showError(error.message);
+            }
+        };
 
         // =====================================================
-        // FUNÇÕES DE CONVERSAS
+        // CARREGAR CONFIGURAÇÃO DO SUPABASE
+        // =====================================================
+
+        async function loadAgentConfig() {
+            const { data, error } = await supabaseClient
+                .from('agent_config')
+                .select('*')
+                .eq('agent_id', CONFIG.DEFAULT_AGENT_ID)
+                .single();
+
+            if (error) {
+                if (error.code === 'PGRST116') {
+                    throw new Error('Configuração não encontrada. Configure primeiro no admin.html');
+                }
+                throw error;
+            }
+
+            if (!data.api_key) {
+                throw new Error('API Key não configurada. Configure no admin.html');
+            }
+
+            agentConfig = {
+                agentId: data.agent_id,
+                agentName: data.agent_name,
+                apiKey: data.api_key,
+                prompt_core: data.prompt_core,
+                prompt_produto: data.prompt_produto,
+                prompt_arquetipos: data.prompt_arquetipos,
+                prompt_linguagem: data.prompt_linguagem,
+                prompt_provas: data.prompt_provas,
+                prompt_abertura: data.prompt_abertura,
+                prompt_transicao: data.prompt_transicao,
+                prompt_objecoes: data.prompt_objecoes
+            };
+
+            console.log('✅ Configuração carregada do Supabase');
+        }
+
+        // =====================================================
+        // CONVERSAS
         // =====================================================
 
         async function loadConversations() {
-            if (!checkReady()) return;
-
             try {
                 const { data, error } = await supabaseClient
                     .from('conversations')
                     .select('*')
-                    .eq('agent_id', agentConfig.agentId)
+                    .eq('agent_id', CONFIG.DEFAULT_AGENT_ID)
                     .order('updated_at', { ascending: false });
 
                 if (error) throw error;
@@ -687,17 +566,10 @@
                 conversations = data || [];
                 updateStats();
                 renderConversations();
+
             } catch (error) {
-                console.error('Erro:', error);
-                document.getElementById('conversationsList').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">❌</div>
-                        <p>Erro ao carregar conversas: ${error.message}</p>
-                        <p style="margin-top: 10px; font-size: 12px; color: #888;">
-                            Verifique se as tabelas foram criadas no Supabase.
-                        </p>
-                    </div>
-                `;
+                console.error('Erro ao carregar conversas:', error);
+                showError('Erro ao carregar conversas: ' + error.message);
             }
         }
 
@@ -707,125 +579,143 @@
             const scheduled = conversations.filter(c => c.status === 'scheduled').length;
             const lost = conversations.filter(c => c.status === 'lost').length;
 
-            document.getElementById('totalConversations').textContent = total;
-            document.getElementById('openConversations').textContent = open;
-            document.getElementById('scheduledConversations').textContent = scheduled;
-            document.getElementById('lostConversations').textContent = lost;
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statOpen').textContent = open;
+            document.getElementById('statScheduled').textContent = scheduled;
+            document.getElementById('statLost').textContent = lost;
         }
 
         function renderConversations() {
-            let filtered = currentFilter === 'all' 
-                ? conversations 
-                : conversations.filter(c => c.status === currentFilter);
+            const container = document.getElementById('conversationsList');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 
-            // Aplicar filtro de busca
+            let filtered = conversations;
+
+            // Filtro por status
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(c => c.status === currentFilter);
+            }
+
+            // Filtro por busca
             if (searchTerm) {
                 filtered = filtered.filter(c => 
-                    c.lead_name.toLowerCase().includes(searchTerm.toLowerCase())
+                    c.lead_name.toLowerCase().includes(searchTerm)
                 );
             }
 
-            const listEl = document.getElementById('conversationsList');
-
             if (filtered.length === 0) {
-                listEl.innerHTML = `
+                container.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">💬</div>
                         <p>Nenhuma conversa encontrada</p>
-                        <p style="margin-top: 10px; font-size: 14px;">
-                            Clique em "Nova Conversa" para começar
-                        </p>
                     </div>
                 `;
                 return;
             }
 
-            listEl.innerHTML = filtered.map(conv => `
-                <div class="conversation-card" onclick="openConversation('${conv.id}')">
-                    <div class="conversation-info">
-                        <div class="conversation-header">
-                            <div class="conversation-name">${escapeHtml(conv.lead_name)}</div>
-                            <div class="platform-badge platform-${conv.platform}">
-                                ${conv.platform === 'instagram' ? '📷 Instagram' : '💼 LinkedIn'}
-                            </div>
+            container.innerHTML = filtered.map(conv => {
+                const statusClass = {
+                    'open': 'status-open',
+                    'scheduled': 'status-scheduled',
+                    'lost': 'status-lost'
+                }[conv.status] || 'status-open';
+
+                const statusText = {
+                    'open': '🟡 Em Aberto',
+                    'scheduled': '✅ Agendada',
+                    'lost': '❌ Perdida'
+                }[conv.status] || conv.status;
+
+                const platformIcon = conv.platform === 'instagram' ? '📷' : '💼';
+                const date = new Date(conv.updated_at).toLocaleDateString('pt-BR');
+
+                return `
+                    <div class="conversation-item" onclick="openConversation('${conv.id}')">
+                        <div class="conv-avatar">
+                            <img src="avatar.png" alt="${conv.lead_name}">
                         </div>
-                        <div class="conversation-meta">
-                            <span>👤 ${escapeHtml(conv.profile_url)}</span>
-                            <span>🕐 ${new Date(conv.updated_at).toLocaleDateString('pt-BR')}</span>
+                        <div class="conv-info">
+                            <div class="conv-name">${conv.lead_name}</div>
+                            <div class="conv-meta">${platformIcon} ${conv.platform} • ${conv.profile_url} • ${date}</div>
                         </div>
+                        <span class="conv-status ${statusClass}">${statusText}</span>
                     </div>
-                    <div class="status-badge status-${conv.status}">
-                        ${conv.status === 'open' ? '🟡 Em Aberto' : 
-                          conv.status === 'scheduled' ? '✅ Agendada' : 
-                          '❌ Perdida'}
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+        function openConversation(conversationId) {
+            const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
+            const chatUrl = `${baseUrl}chat.html?agent=${CONFIG.DEFAULT_AGENT_ID}&conv=${conversationId}&sdr=${currentSDR}`;
+            window.open(chatUrl, '_blank');
         }
 
-        function filterBySearch() {
-            searchTerm = document.getElementById('searchInput').value;
+        // =====================================================
+        // FILTROS
+        // =====================================================
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+
             renderConversations();
         }
 
-        function filterConversations(filter) {
-            currentFilter = filter;
-            
-            // Atualizar botões ativos
-            document.querySelectorAll('.btn-secondary').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active');
-            
+        function filterConversations() {
             renderConversations();
         }
 
         // =====================================================
-        // MODAL E CRIAÇÃO DE CONVERSA
+        // MODAL NOVA CONVERSA
         // =====================================================
 
         function showNewConversationModal() {
-            if (!checkReady()) return;
             document.getElementById('newConversationModal').classList.add('active');
+            document.getElementById('leadName').value = '';
+            document.getElementById('profileUrl').value = '';
+            selectedPlatform = 'instagram';
+            updatePlatformUI();
         }
 
         function closeModal() {
             document.getElementById('newConversationModal').classList.remove('active');
-            document.getElementById('leadName').value = '';
-            document.getElementById('platform').value = '';
-            document.getElementById('profileUrl').value = '';
+        }
+
+        function selectPlatform(platform) {
+            selectedPlatform = platform;
+            updatePlatformUI();
+        }
+
+        function updatePlatformUI() {
+            document.querySelectorAll('.platform-btn').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.platform === selectedPlatform);
+            });
         }
 
         async function createConversation() {
-            if (!checkReady()) return;
-
             const leadName = document.getElementById('leadName').value.trim();
-            const platform = document.getElementById('platform').value;
             const profileUrl = document.getElementById('profileUrl').value.trim();
 
-            if (!leadName || !platform || !profileUrl) {
-                alert('⚠️ Preencha todos os campos');
+            if (!leadName) {
+                alert('Por favor, informe o nome do lead');
                 return;
             }
 
-            const btn = document.getElementById('createConvBtn');
+            const btn = document.getElementById('createBtn');
             btn.disabled = true;
-            btn.textContent = '⏳ Criando...';
+            btn.textContent = 'Criando...';
 
             try {
                 const { data, error } = await supabaseClient
                     .from('conversations')
                     .insert([{
-                        agent_id: agentConfig.agentId,
+                        agent_id: CONFIG.DEFAULT_AGENT_ID,
                         lead_name: leadName,
-                        platform: platform,
-                        profile_url: profileUrl,
+                        platform: selectedPlatform,
+                        profile_url: profileUrl || '@' + leadName.toLowerCase().replace(/\s+/g, ''),
                         status: 'open'
                     }])
                     .select();
@@ -834,36 +724,24 @@
 
                 closeModal();
                 await loadConversations();
-                
-                // Abrir conversa criada
                 openConversation(data[0].id);
+
             } catch (error) {
-                console.error('Erro:', error);
-                alert('❌ Erro ao criar conversa: ' + error.message);
+                console.error('Erro ao criar conversa:', error);
+                alert('Erro ao criar conversa: ' + error.message);
             } finally {
                 btn.disabled = false;
                 btn.textContent = 'Criar Conversa';
             }
         }
 
-        function openConversation(conversationId) {
-            if (!agentConfig) {
-                alert('❌ Configuração não encontrada');
-                return;
-            }
+        // =====================================================
+        // ERRO
+        // =====================================================
 
-            try {
-                // Salvar config no sessionStorage para o chat acessar
-                sessionStorage.setItem('sdrAgentConfigTemp', JSON.stringify(agentConfig));
-                
-                const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
-                const chatUrl = `${baseUrl}chat.html?agent=${agentConfig.agentId}&conv=${conversationId}&sdr=${currentSDR}`;
-                
-                window.open(chatUrl, '_blank');
-            } catch (error) {
-                console.error('Erro ao abrir conversa:', error);
-                alert('❌ Erro ao abrir conversa: ' + error.message);
-            }
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorBanner').classList.add('active');
         }
     </script>
 </body>

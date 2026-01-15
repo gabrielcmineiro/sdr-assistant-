@@ -182,6 +182,13 @@
 
         .message.lead .message-avatar {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .message.lead .message-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .message.assistant .message-avatar {
@@ -522,13 +529,13 @@
             <div class="status-controls">
                 <div class="btn-row-1">
                     <button class="btn" onclick="goHome()">🏠 Dashboard</button>
-                    <button class="btn" onclick="markAsScheduled()">✅ Agendar</button>
-                    <button class="btn" onclick="markAsInProgress()">🟡 Em Andamento</button>
+                    <button class="btn" onclick="showRatingModal()">⭐ Avaliar</button>
+                    <button class="btn" onclick="showDeleteModal()">🗑️ Apagar</button>
                 </div>
                 <div class="btn-row-2">
-                    <button class="btn" onclick="showRatingModal()">⭐ Avaliar</button>
+                    <button class="btn" onclick="markAsScheduled()">✅ Agenda</button>
+                    <button class="btn" onclick="markAsInProgress()">🟡 Em Andamento</button>
                     <button class="btn" onclick="showLostModal()">❌ Lost</button>
-                    <button class="btn" onclick="showDeleteModal()">🗑️ Apagar</button>
                 </div>
             </div>
         </div>
@@ -620,6 +627,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="config.js"></script>
     <script>
         // =====================================================
         // CONFIGURAÇÃO POR SDR
@@ -630,7 +638,7 @@
             'jeni': 'Jeni'
         };
 
-        const PROXY_URL = 'https://black-wood-a129.ferramentas-ac3.workers.dev/';
+        const PROXY_URL = CONFIG.PROXY_URL;
         
         let supabaseClient;
         let agentConfig;
@@ -1129,78 +1137,66 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
             // Atualizar título
             document.title = `Chat - ${getSdrName()}`;
 
-            // Tentar carregar config do sessionStorage primeiro
-            let tempConfig = sessionStorage.getItem('sdrAgentConfigTemp');
-            if (tempConfig) {
-                agentConfig = JSON.parse(tempConfig);
-            } else {
-                // Fallback para localStorage específico do SDR
-                const storageKey = getStorageKey();
-                let saved = localStorage.getItem(storageKey);
-                
-                // Fallback para config global
-                if (!saved) {
-                    saved = localStorage.getItem('sdrAgentConfig');
-                }
-                
-                if (!saved) {
-                    alert('❌ Configuração não encontrada. Configure primeiro no admin.html');
-                    return;
-                }
-                agentConfig = JSON.parse(saved);
-            }
-            
-            agentConfig.agentId = agentId;
-            agentConfig.sdr = currentSDR;
+            try {
+                // Inicializar Supabase com config centralizada
+                supabaseClient = window.supabase.createClient(
+                    CONFIG.SUPABASE_URL,
+                    CONFIG.SUPABASE_ANON_KEY
+                );
 
-            if (!agentConfig.supabaseUrl || !agentConfig.supabaseKey) {
-                alert('❌ Credenciais do Supabase não encontradas. Configure primeiro no admin.html');
-                return;
-            }
-            
-            supabaseClient = window.supabase.createClient(agentConfig.supabaseUrl, agentConfig.supabaseKey);
+                // Carregar configuração do Supabase
+                await loadAgentConfig();
+                
+                // Carregar conversa
+                await loadConversation();
 
-            await loadAgentPrompts(agentId);
-            await loadConversation();
+            } catch (error) {
+                console.error('Erro na inicialização:', error);
+                alert('❌ Erro: ' + error.message);
+            }
         }
 
         window.onload = init;
 
-        async function loadAgentPrompts(agentId) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('agents')
-                    .select('prompt, prompt_core, prompt_produto, prompt_arquetipos, prompt_linguagem, prompt_provas, prompt_abertura, prompt_transicao')
-                    .eq('id', agentId)
-                    .single();
+        async function loadAgentConfig() {
+            const { data, error } = await supabaseClient
+                .from('agent_config')
+                .select('*')
+                .eq('agent_id', CONFIG.DEFAULT_AGENT_ID)
+                .single();
 
-                if (error) throw error;
-
-                agentPrompts = {
-                    prompt: data.prompt || agentConfig.systemPrompt || '',
-                    prompt_core: data.prompt_core || agentConfig.prompt_core || '',
-                    prompt_produto: data.prompt_produto || agentConfig.prompt_produto || '',
-                    prompt_arquetipos: data.prompt_arquetipos || agentConfig.prompt_arquetipos || '',
-                    prompt_linguagem: data.prompt_linguagem || agentConfig.prompt_linguagem || '',
-                    prompt_provas: data.prompt_provas || agentConfig.prompt_provas || '',
-                    prompt_abertura: data.prompt_abertura || agentConfig.prompt_abertura || '',
-                    prompt_transicao: data.prompt_transicao || agentConfig.prompt_transicao || ''
-                };
-
-                console.log('📦 Prompts carregados:', Object.keys(agentPrompts).filter(k => agentPrompts[k]).length, 'módulos');
-            } catch (error) {
-                console.warn('⚠️ Erro ao carregar prompts do banco, usando fallback local:', error);
-                agentPrompts = {
-                    prompt: agentConfig.systemPrompt || '',
-                    prompt_core: agentConfig.prompt_core || '',
-                    prompt_produto: agentConfig.prompt_produto || '',
-                    prompt_arquetipos: agentConfig.prompt_arquetipos || '',
-                    prompt_linguagem: agentConfig.prompt_linguagem || '',
-                    prompt_provas: agentConfig.prompt_provas || '',
-                    prompt_abertura: agentConfig.prompt_abertura || '',
-                    prompt_transicao: agentConfig.prompt_transicao || ''
-                };
+            if (error) {
+                if (error.code === 'PGRST116') {
+                    throw new Error('Configuração não encontrada. Configure primeiro no admin.html');
+                }
+                throw error;
             }
+
+            if (!data.api_key) {
+                throw new Error('API Key não configurada. Configure no admin.html');
+            }
+
+            // Montar agentConfig
+            agentConfig = {
+                agentId: data.agent_id,
+                agentName: data.agent_name,
+                apiKey: data.api_key,
+                sdr: currentSDR
+            };
+
+            // Montar agentPrompts
+            agentPrompts = {
+                prompt_core: data.prompt_core || '',
+                prompt_produto: data.prompt_produto || '',
+                prompt_arquetipos: data.prompt_arquetipos || '',
+                prompt_linguagem: data.prompt_linguagem || '',
+                prompt_provas: data.prompt_provas || '',
+                prompt_abertura: data.prompt_abertura || '',
+                prompt_transicao: data.prompt_transicao || '',
+                prompt_objecoes: data.prompt_objecoes || ''
+            };
+
+            console.log('📦 Prompts carregados:', Object.keys(agentPrompts).filter(k => agentPrompts[k]).length, 'módulos');
         }
 
         async function loadConversation() {
@@ -1242,7 +1238,7 @@ Analise a resposta do lead e sugira a próxima mensagem que a SDR deve enviar. S
             
             for (const msg of messages) {
                 const isLead = msg.role === 'lead';
-                const avatar = isLead ? '👤' : '🤖';
+                const avatar = isLead ? '<img src="avatar.png" alt="Lead">' : '🤖';
                 const label = isLead ? 'Lead respondeu:' : 'Sugestão do Claude:';
                 
                 const content = isLead ? msg.content : marked.parse(msg.content);
