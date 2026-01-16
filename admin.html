@@ -492,20 +492,11 @@
 
                     <div class="module-item" id="module-transicao">
                         <div class="module-header">
-                            <span class="module-title">🚀 TRANSIÇÃO - Rumo ao Agendamento</span>
+                            <span class="module-title">🚀 TRANSIÇÃO - Proposta, Objeções e Agendamento</span>
                             <span class="module-status" id="status-transicao">Vazio</span>
                         </div>
-                        <textarea id="prompt_transicao" placeholder="Como conduzir para o agendamento, quando propor a sessão..." onchange="updateModuleStatus('transicao')"></textarea>
+                        <textarea id="prompt_transicao" placeholder="Scripts de proposta, contorno de objeções, agendamento, follow-up..." onchange="updateModuleStatus('transicao')"></textarea>
                         <div class="char-count"><span id="count-transicao">0</span> caracteres</div>
-                    </div>
-
-                    <div class="module-item" id="module-objecoes">
-                        <div class="module-header">
-                            <span class="module-title">⚠️ OBJEÇÕES - Contornando Resistências</span>
-                            <span class="module-status" id="status-objecoes">Vazio</span>
-                        </div>
-                        <textarea id="prompt_objecoes" placeholder="Como lidar com objeções comuns: preço, tempo, preciso pensar..." onchange="updateModuleStatus('objecoes')"></textarea>
-                        <div class="char-count"><span id="count-objecoes">0</span> caracteres</div>
                     </div>
                 </div>
 
@@ -545,7 +536,7 @@
         let supabaseClient;
         let currentConfig = null;
 
-        const moduleFields = ['core', 'produto', 'arquetipos', 'linguagem', 'provas', 'abertura', 'transicao', 'objecoes'];
+        const moduleFields = ['core', 'produto', 'arquetipos', 'linguagem', 'provas', 'abertura', 'transicao'];
 
         // =====================================================
         // INICIALIZAÇÃO
